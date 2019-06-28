@@ -1,0 +1,39 @@
+.panel{
+	font-size: 15px;
+}
+
+.panel-body>.col-md-12{
+	/*background-color:#E6EFF0;*/
+	margin-top: 5px;
+	margin-bottom: 5px;
+	border-radius: 4px;
+}
+
+label{
+	width: 150px;
+	padding-left: 5px;
+	text-align: center;
+	font-weight: normal;
+}
+
+input{
+	width: 150px;
+}
+
+thead{
+	background-color:  #E0E4E4;
+}
+
+form>button{
+	padding-left: 15px;
+	/*background-color: #839E9F;*/
+	width: 80px;
+	
+}
+tbody{
+	background-color: #FFFFFF;
+}
+h5{
+	font-size: 16px;
+	font-weight: bold;
+}

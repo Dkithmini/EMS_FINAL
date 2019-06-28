@@ -1,0 +1,61 @@
+
+.panel{
+	/*background-color:#E6EFF0;*/
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font-size: 15px;
+	border-radius: 4px;
+
+}
+
+.tab-pane{
+	margin-top: 10px;
+	margin-bottom: 5px;
+}
+
+input[type=text]{
+	width: 100px;
+}
+label{
+	width: 230px;
+	padding-left: 50px;
+	font-weight: normal;
+}
+
+#idfrom{
+	width: 150px;
+	padding: none;
+	text-align: center;
+}
+
+#idto{
+	width: 150px;
+	padding: none;
+	text-align: center;
+}
+
+#search1{
+	width: 150px;
+	margin-left: 40px;
+}
+
+#search2{
+	width: 150px;
+	margin-left: 40px;
+}
+
+.row-md-12{
+	background-color: #C1C3C4;
+}
+
+thead{
+	background-color: #E0E4E4;
+}
+
+tbody{
+	background-color: #FFFFFF;
+}
+h5{
+	font-size: 16px;
+	font-weight: bold;
+}

@@ -1,0 +1,41 @@
+.panel{
+	font-size: 15px;
+	/*background-color: #E6EFF0;*/
+	margin-top: 5px;
+	margin-bottom: 5px;
+	border-radius: 4px;
+}
+
+label{
+	width: 200px;
+	padding-left: 50px;
+	text-align: left;
+	font-weight: normal;
+}
+
+input[type=text]{
+	width: 200px;
+}
+
+.panel-body{
+	max-height: 220px;
+	overflow-y: scroll;
+}
+
+thead{
+	background-color:  #E0E4E4;
+}
+
+form>button{
+	padding-left: 15px;
+	/*background-color: #839E9F;*/
+	width: 100px;
+}
+
+tbody{
+	background-color: #FFFFFF;
+}
+h5{
+	font-size: 16px;
+	font-weight: bold;
+}

@@ -1,0 +1,61 @@
+.panel{
+	font-size: 15px;
+}
+
+label{
+	width: 150px;
+	padding-left: 50px;
+	text-align: center;
+	font-weight: normal;
+}
+
+input[type=text]{
+	width: 150px;
+}
+
+input[type=number]{
+	width: 150px;
+}
+
+/*.col-md-7{
+	background-color:#E6EFF0;
+}
+.col-md-5{
+	background-color:#E6EFF0;
+}*/
+
+/*#sec1,#sec2{
+	background-color: #E6EFF0;
+}*/
+
+.col-md-7>input{
+	width: 70px;
+}
+
+thead{
+	background-color: #E0E4E4;
+}
+
+.btn-info , .btn-basic{
+	float:justify;
+
+	margin: 2px;
+	/*background-color: #839E9F;*/
+	width: 80px;
+}
+
+tbody{
+	background-color: #FFFFFF;
+}
+h5{
+	font-size: 16px;
+	font-weight: bold;
+}
+form{
+	border-style: none;
+}
+
+.btn-success, .btn-danger{
+	float: right;
+	margin: 2px;
+}

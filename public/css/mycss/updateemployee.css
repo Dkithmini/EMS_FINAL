@@ -1,0 +1,44 @@
+.panel{
+	font-size: 15px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+#empid {
+	width: 120px;
+}
+
+label{
+	width: 200px;
+	padding-left: 50px;
+	text-align: left;
+	font-weight: normal;
+}
+
+input[type=text]{
+	width: 200px;
+}
+
+/*input[type=date]{
+	width: 200px;
+}*/
+/*.panel-body{
+	max-height: 800px;
+	background-color: #E6EFF0;
+	border-radius: 4px;
+}*/
+
+
+form > button{
+	padding-left: 15px;
+	/*background-color: #839E9F;*/
+	width: 100px;
+}
+
+.col-md-12{
+	margin-top: 5px;
+}
+h5{
+	font-size: 16px;
+	font-weight: bold;
+}

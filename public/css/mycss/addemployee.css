@@ -1,0 +1,49 @@
+.panel{
+	font-size: 15px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+/*#fullname {
+	width: 500px;
+}*/
+
+label{
+	width: 250px;
+	padding-left: 50px;
+	text-align: left;
+	font-weight: normal;
+}
+
+input[type=text]{
+	width: 350px;
+}
+
+input[type=number]{
+	width: 350px;
+}
+
+select{
+	width: 150px;
+}
+
+input[type=date]{
+	width: 150px;
+}
+
+.btn-md{
+	padding-left: 15px;
+	/*background-color: #839E9F;*/
+	width: 100px;
+	margin: 2px;
+	float: right;
+}
+
+.col-md-12{
+	margin-top: 5px;
+}
+
+h5{
+	font-size: 16px;
+	font-weight: bold;
+}
