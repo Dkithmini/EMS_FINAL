@@ -45,13 +45,13 @@
 
                     <form>
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <label>Task Id</label><input type="text" name="txtTaskid" id="tid" readonly="">
+                        <label>Task Id</label><input type="text" name="txtTaskid" id="tid" readonly=""><br>
                         <input type="text" name="txtSid" id="shed" hidden="">
                         <label>Section</label><input type="text" name="txtsec" id="section_name" readonly="">
-                        <label>Time</label><input type="text" name="txttime" id="time_slot" readonly="" ><br>
+                        <label>Time Slot</label><input type="text" name="txttime" id="time_slot" readonly="" >
                         <label>Item Code</label><input type="text" name="txtitem" id="code" readonly="" >
                         <label>Task Qty </label><input type="number" name="txtQty" id="quanty" readonly="">
-                        <label>Suggested Allocation</label><input type="number" name="txtNo_employees" id="no_of_emp"><label style="padding-left:0px;">emps.</label><br>
+                        <label>Suggested Allocation</label><input type="number" name="txtNo_employees" id="no_of_emp"><label style="text-align: left;">emps.</label><br>
                         <!-- <label>Target Qty</label><input type="number" name="txttarget" id="targetQty"><br><br> -->
                         <label>Employees</label><input type="number" name="emps_count" id="emps_count">
                         <label>Target Qty</label><input type="number" name="txt_target" id="emp_targetQty">
@@ -94,8 +94,8 @@
                                 
                         </div>
                         <div class="col-md-4" style="max-height: 180px;">
-                            <label style="width: 200px;">Total Attended</label><input type="text" id="emp_attended"><br>
-                            <label style="width: 200px;">Unallocated Employees</label><input type="text" id="emp_free"><br><br> 
+                            <label style="width: 200px;text-align: left;">Total Attended</label><input type="text" id="emp_attended"><br>
+                            <label style="width: 200px;text-align: left;">Unallocated Employees</label><input type="text" id="emp_free"><br><br> 
                             <button class="btn btn-basic" type="Reset">Reset</button>
                             <button class="btn btn-info" type="button" id="btnAllocate">Add</button>
                             <button class="btn btn-success" type="button" id="btnfinish" disabled="">Finish</button>
