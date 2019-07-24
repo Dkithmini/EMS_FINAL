@@ -68,6 +68,7 @@
 
 					<div class="col-md-6">
 							<form id="frmLastSched">
+								<label>Tot Qty</label><input type="text" name="txttot" id="showTot"><br>
 								<label>Suggested Hrs: </label>
 								<label style="width: 50px;text-align: center;">C</label>
 								<input type="number" name="txtduration_Cutting" id="hrs_suggested_Cutting" readonly="" style="width: 50px;">
@@ -105,10 +106,10 @@
 										<input type="text" name="s_id" id="sid" hidden="">
 										<label>Task Id</label><input type="text" name="txtTaskId" id="taskid" readonly=""><br>
 										<label>Date</label><input type="Date" name="dateTask" id="datetask"><br>
-										<!-- <label>Item Code</label>
+										<label>Item Code</label>
 											<select name="Itemselect" id="itemselect">
 												
-											</select> -->
+											</select>
 										<label>Section</label>
 											<select name="Section" id="section">
 												<option >--Select--</option>
@@ -140,8 +141,7 @@
 
 					<div class="col-md-6">
 						<div id="sec1">
-							<!-- <label>Item Code</label><input type="text" name="txtid" id="id_Itemcode"> -->
-							<label>Tot Qty</label><input type="text" name="txttot" id="showTot"><br>
+							<label>Item Total</label><input type="text" name="txtItemTotal" id="ItemTotal">
 							<label>Cutting</label><input type="text" id="Cutting_summery" ><br>
 							<label>Sewing</label><input type="text"  id="Sewing_summery"><br>
 							<label>Finishing</label><input type="text"  id="Finishing_summery"><br>
@@ -179,6 +179,10 @@
 	<script type="text/javascript">
 		//on loading page show order,task and shed ids
 		$(document).ready(function(){
+			$('#Cutting_summery').val('');
+			$('#Sewing_summery').val('');
+			$('#Finishing_summery').val('');
+
 			getLastShedId();
 			getLastTaskId();
 		})
@@ -269,6 +273,7 @@
 			 	success:function(itemdata){
 			 		var tot_Items_Ordered=0;
 			 		var showdata='';
+
 					$('#itemselect').html($('<option>', {
     						text: '--select--'
 						}));
@@ -289,14 +294,15 @@
 						showdata +="</tr>";
 						document.getElementById("tbody1").innerHTML=showdata;
 
-						// // select ordered item codes for select tag drop down in "add task"
-						// $('#itemselect').append($('<option>', {
-    		// 				value: item_code,
-    		// 				text: item_code
-						// }));
+						// select ordered item codes for select tag drop down in "add task"
+						$('#itemselect').append($('<option>', {
+    						value: item_code,
+    						text: item_code
+						}));
 						
 					}
-						$('#showTot').val(tot_Items_Ordered);
+						$('#showTot').val(tot_Items_Ordered);	//display total qty of order
+
 
 						//calculate the production hours for sections
 						// Ratio of emps: C:S:F = 4:18:8
@@ -470,6 +476,10 @@
 			}
 		 });
 
+		 $('#itemselect').change(function(){
+		 	getItemTotal()
+		 })
+
 		 //suggest task qty when section,slot selected
 		 $("#section").change(function(){
 		 	$('#timeslot').change(function(){
@@ -479,6 +489,7 @@
 
 		 //setting target qtys for different sections
 		 function setTaskQty(){
+
 		 	var slot_selected=$('#timeslot').val();
 		 	var sec_selected=$('#section').val();
 		 	var qty_task=0;
@@ -551,7 +562,7 @@
 				var qty=$("#quantity").val();
 
 				
-				var markup = "<tr><td>"+ id +"</td><td>" + date + "</td><td>" + section +"</td><td>"+ timeslot + "</td><td>"+ itemcode +"</td><td>"+ qty +"</td></tr>";
+				var markup = "<tr><td>"+ id +"</td><td>" + date + "</td><td>" + section +"</td><td>"+ timeslot + "</td><td>"+ qty +"</td></tr>";
            		$('#tbody2').append(markup);
 			});
 
@@ -562,14 +573,15 @@
 			})
 
 			function checkSummery(searchShed=''){
+				var selected_itemCode=$('#itemselect').val();
 							
 					$.ajax({
 						url:'/checkScheduledQty',
 						method:'get',
-						data:{'searchShed':searchShed,},
+						data:{'searchShed':searchShed,'selected_itemCode':selected_itemCode},
 
 						success:function(response){
-							var total_quantity=$('#showTot').val();
+							var total_quantity=$('#ItemTotal').val();
 						 	var result=response.data;
 						 	console.log(result);
 
@@ -598,6 +610,29 @@
 						}
 					});
 				
+			}
+
+			function getItemTotal(){
+				var ItemId=$('#itemselect').val();
+				var ScheduleId=$('#idshed').val();
+
+		 		$.ajax({
+				url:'/getSelected_Item_Total',
+				method:'get',
+				data: {'ItemId':ItemId,'ScheduleId':ScheduleId},
+
+				success:function(response){
+				 	var qty_item=response.data;
+
+				 	for(i=0;i<qty_item.length;i++){
+				 		qty_selected_item=qty_item[0].Total_Qty;
+				 	}
+
+				 	$('#ItemTotal').val(qty_selected_item);
+
+					}
+		 		
+				});
 			}
 		
 

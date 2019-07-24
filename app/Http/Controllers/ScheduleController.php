@@ -97,8 +97,11 @@ class ScheduleController extends Controller
 
     public function checkQty(Request $req){
         $temp=$req->get('searchShed');
+        $code_selected=$req->get('selected_itemCode');
+
         $row=DB::table('daily_tasks')
                 ->where('Schedule_Id','like','%'.$temp.'%')
+                ->where('Item_Code','like','%'.$code_selected.'%')
                 ->get();
        
         return response()->json(['data'=>$row]);
@@ -126,7 +129,6 @@ class ScheduleController extends Controller
         return response()->json(['data'=>$data]);
         // echo "successfully added to shedule";
     }
-
 
 
     //view schedule details
@@ -191,7 +193,7 @@ class ScheduleController extends Controller
 
     }
 
-    //get all employee ids
+    //get all employee ids unallocated
     public function getComboboxData_Emp(Request $select_emp){
          if($select_emp->ajax()){
             $check_date=$select_emp->get('task_date');
@@ -216,8 +218,12 @@ class ScheduleController extends Controller
 
                 $result=array_diff($y, $x);
 
-                    
-                echo json_encode(array_values($result));
+                // $array_ids = array_map(function ($array) {return $array['Emp_Id'];}, $data);
+                // $result = DB::table('employee')
+                //         ->whereIn('Emp_Id',$array_ids)
+                //         ->select('Emp_Name')
+                //         ->get();  
+                echo json_encode($result);
              
         }
     }
@@ -254,7 +260,6 @@ class ScheduleController extends Controller
                 
         }
     }
-
     
 
     //show allocated employees for tasks
@@ -324,7 +329,7 @@ class ScheduleController extends Controller
         return response()->json(['data'=>$allTasks]);
     }   
 
-    public function getItemQty(Request $taskid){
+    public function getItemCodes(Request $taskid){
         if($taskid->ajax()){
             $req=$taskid->get('taskid');
             if($req!=''){
@@ -332,7 +337,7 @@ class ScheduleController extends Controller
                         ->join('daily_tasks','schedules.Schedule_Id','=','daily_tasks.Schedule_Id')
                         ->where('Task_Id','like','%'.$req.'%')
                         ->join('ordered_items','schedules.Order_Id','=','ordered_items.Order_Id')
-                        ->select('ordered_items.Item_Code','ordered_items.Total_Qty')
+                        ->select('ordered_items.Item_Code')
                         ->get();
                 
                     return response()->json(['data'=>$data]);    
@@ -340,5 +345,39 @@ class ScheduleController extends Controller
              }
         }
 
+    }
+
+    public function getItemTotal(Request $request){
+        if($request->ajax()){
+            $req_sched=$request->get('ScheduleId');
+            $req_itemCode=$request->get('ItemId');
+            
+            $data=DB::table('schedules')
+                    ->join('ordered_items','schedules.Order_Id','=','ordered_items.Order_Id')
+                    ->where('Schedule_Id','like','%'.$req_sched.'%')
+                    ->select('ordered_items.Total_Qty')
+                    ->where('Item_Code','like','%'.$req_itemCode.'%')
+                    ->get();
+                
+                    return response()->json(['data'=>$data]);    
+                
+             
+        }
+    }
+
+    public function getAttendedEmpCount(Request $request){
+       if($request->ajax()){
+            $req_date=$request->get('');
+            $state_present='present';
+            
+            $data=DB::table('attendance')
+                    ->where('Date','like','%'.$req_date.'%')
+                    ->where('Status','like','%'.$state_present.'%')
+                    ->pluck('attendance.Emp_Id');
+                
+                    return response()->json(['data'=>$data]);    
+                
+             
+        } 
     }
 }

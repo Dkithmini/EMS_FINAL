@@ -15,7 +15,6 @@ Route::get('/', function () {
     return view('home');
 });
 
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
@@ -64,8 +63,10 @@ Route::post('/addtask','ScheduleController@addTask');//add tasks
 Route::get('/searchschedulebyid','ScheduleController@searchSchedulebyId');//search scheduled tasks details
 Route::get('/searchschedulebydate','ScheduleController@searchSchedulebyDate');//search scheduled tasks details
 Route::get('/searchsched','ScheduleController@viewSchedule');//view schedules
-Route::get('/checkqty','ScheduleController@getItemQty');//get ordered item qty for task allocation
-Route::get('/getids','ScheduleController@getComboboxData_Emp');//get emp ids
+Route::get('/get_item_code','ScheduleController@getItemCodes');//get ordered item qty for task allocation
+Route::get('/getSelected_Item_Total','ScheduleController@getItemTotal');//get unallocated qty of items
+Route::get('/getAttendedCount','ScheduleController@getAttendedEmpCount');
+Route::get('/getids_unallocated','ScheduleController@getComboboxData_Emp');//get emp ids
 Route::post('/allocateemp','ScheduleController@allocateEmp');//allocate emp
 Route::post('/changetaskstatus','ScheduleController@finishEmpAllocation');//change status of task from pending to allocated
 Route::get('/searchtask','ScheduleController@viewAllocatedTask');//get allocated task details
