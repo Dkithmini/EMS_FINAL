@@ -1,8 +1,9 @@
 @extends('ManagerHome')
 
 @section('show_content')
-<div class="panel">
-		<div class="panel-body">
+<link rel="stylesheet" type="text/css" href="{{ asset('css/mycss/viewschedule.css') }}">
+	<div class="panel">
+		<div class="panel-body" >
 
 			<div class="col-md-12">
 				<h5>Schedule Details</h5>
@@ -23,18 +24,18 @@
 					
 				</form>
 			</div>
-			<div class="col-md-12">
+			<div class="col-md-12" style="max-height: 200px;overflow-y: scroll;">
 				<table class="table table-striped table-condensed">
 					<thead>
 						<tr>
-						<th >task Id</th>
+						<th >Task Id</th>
 						<th >Date</th>
 						<th >Section</th>
-					   	<th >Time</th>
-						<th >Item</th>
+					   	<th >Time Slot</th>
+						<th >Item Code</th>
 						<th >Qty</th>
 						<th >Status</th>
-						<th >Select</th>
+						<th ></th>
 						</tr>
 					</thead>
 					<tbody id="tbody1">
@@ -49,13 +50,31 @@
 		</div>
 	</div>
 
+	<div class="panel">
+		<div class="panel-body">
+			<div>
+				<label>Total Tasks Scheduled</label><input type="text" name="txtTotal_scheduled" id="totalScheduled">
+				<label>Total Allocated</label><input type="text" name="txtAllocated" id="totalallocated">
+				<label>Total Completed</label><input type="text" name="txtCompleted" id="totalcompleted">
+				<button type="button" id="btnRefresh">Refresh</button>
+			</div>
+			<br>
+			<div class="progress" style="height: 30px;" >
+				<div class="progress-bar bg-info" role="progressbar" aria-valuemax="100" id="scheduleprogressbar"><span class="caption"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+
 
 	<script type="text/javascript">
+
 		$('#btnviewshedule').click(function(){
 			
 			var searchid=$('#sheduleid').val();
 			viewSchedule(searchid);
 			viewScheduleTasks(searchid);
+			$('#btnRefresh').trigger('click');
 		});
 		
 
@@ -84,10 +103,13 @@
 						showdata +="<tr>";
 						showdata +="<td>"+task_Id+"</td><td>"+date+"</td><td>"+section+"</td><td>"+time+"<td>"+itemcode+"</td><td>"+qty+"</td><td>"+status+"</td>";
 						if(status==="pending"){
-							showdata +="<td><button type='button' id='btntableallocate' class='btn btn-success btn-sm'>Allocate</td>";
+							showdata +="<td><i class='fas fa-times'></i></td>";
+						}
+						else if(status==="Completed"){
+							showdata +="<td><i class='fas fa-check'></i></td>";
 						}
 						else
-							showdata +="<td><button type='button' id='btntableallocate' class='btn btn-success btn-sm' disabled=''>Allocate</td>";
+							showdata +="<td><i class='fas fa-times'></i></td>";
 						showdata +="</tr>";
 						document.getElementById("tbody1").innerHTML=showdata;
 						
@@ -131,5 +153,45 @@
 			 })
 		}
 
+		$('#btnRefresh').click(function(){
+			var checkBySchedId=$('#sheduleid').val();
+			checkSheduleCompletionState(checkBySchedId);
+		})
+
+		function checkSheduleCompletionState(checkBySchedId=''){
+			$.ajax({
+				url:'/checkSchedCompletion',
+			 	method:'get',
+			 	data:{'schedId':checkBySchedId},
+			 	
+			 	success:function(response){
+			 		// console.log(response);
+			 		var result=response.data;
+			 		var count_completed=0;
+			 		var count_total=0;
+			 		var count_allocated=0;
+
+			 		for(i=0;i<result.length;i++){
+			 			var temp=result[i];
+			 			count_total=(i+1);
+
+			 			if(temp==='Completed'){
+			 				count_completed=parseInt(count_completed+1);
+			 			}
+			 			if(temp==='allocated'){
+			 				count_allocated=parseInt(count_allocated+1);
+			 			}
+			 		}
+			 		
+			 		$('#totalScheduled').val(count_total);
+			 		$('#totalallocated').val(count_allocated);
+			 		$('#totalcompleted').val(count_completed);
+
+			 		var ratio_completed=Math.round((count_completed/count_total)*100);
+			 		$('#scheduleprogressbar').width(ratio_completed+'%').attr('aria-valuenow', ratio_completed+'%');
+			 		$("#scheduleprogressbar").children('span.caption').html(ratio_completed + '%');
+			 	}
+			})
+		}
 	</script>
 @endsection

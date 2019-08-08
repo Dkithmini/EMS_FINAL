@@ -16,13 +16,13 @@
    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 
     <title>Supervisor Login</title>
-</head>
+
 <body class="bg-light">
 
 <div class="d-flex">
     <div class="sidebar sidebar-dark bg-dark">
         <ul class="list-unstyled">
-            <li><a href="#"><i class="fa fa-fw fa-tachometer-alt"></i>Dashboard</a></li>
+            <!-- <li><a href="#"><i class="fa fa-fw fa-tachometer-alt"></i>Dashboard</a></li> -->
             <li>
                 <a href="#sm_expand_1" data-toggle="collapse">
                     <i class="fa fa-fw fa-cart-plus"></i>Orders
@@ -42,14 +42,14 @@
 		            <li><a href="{{url('schedules/updatetask')}}">Update Tasks</a></li>
                 </ul>
             </li>
-	        <li>
+	        <!-- <li>
                 <a href="#sm_expand_3" data-toggle="collapse">
                    <i class="fa fa-fw fa-user"></i>Employees
                 </a>
                 <ul id="sm_expand_3" class="list-unstyled collapse">
 		            <li><a href="#">View Employee</a></li>
                 </ul>
-            </li>
+            </li> -->
 	        <li>
                 <a href="#sm_expand_4" data-toggle="collapse">
                    <i class="fa fa-fw fa-calendar-check"></i>Attendance

@@ -65,14 +65,18 @@ Route::get('/searchschedulebydate','ScheduleController@searchSchedulebyDate');//
 Route::get('/searchsched','ScheduleController@viewSchedule');//view schedules
 Route::get('/get_item_code','ScheduleController@getItemCodes');//get ordered item qty for task allocation
 Route::get('/getSelected_Item_Total','ScheduleController@getItemTotal');//get unallocated qty of items
-Route::get('/getAttendedCount','ScheduleController@getAttendedEmpCount');
-Route::get('/getids_unallocated','ScheduleController@getComboboxData_Emp');//get emp ids
+Route::get('/getAttendedCount','ScheduleController@getAttendedEmpCount');//get count of total attendance for the day
+Route::get('/getids_unallocated','ScheduleController@getUnallocated_Emp');//get ids of unallocated emplpoyees
 Route::post('/allocateemp','ScheduleController@allocateEmp');//allocate emp
 Route::post('/changetaskstatus','ScheduleController@finishEmpAllocation');//change status of task from pending to allocated
+Route::get('/getTasksBydate','ScheduleController@showAlltasksByDate');//search tasks by date
 Route::get('/searchtask','ScheduleController@viewAllocatedTask');//get allocated task details
-Route::get('/showtaskemp','ScheduleController@showTaskEmployees');//get allocated emp
+Route::get('/showtaskemp','ScheduleController@showTaskEmployees');//get allocated employee list for task
 Route::get('/getitemsizes','ScheduleController@displayTaskSizes');//get item sizes for task
 Route::post('/updatetask','ScheduleController@updateTaskCompletion');//update task completion
+Route::get('/checkTaskCompletion','ScheduleController@getTaskQtyCompleted');//check comlpleted qty by employees
+Route::post('/changeState_completed','ScheduleController@changeTaskState_Completed');//change task state from allocated to completed
+Route::get('/checkSchedCompletion','ScheduleController@getSchedsCompleted');// check states of schedule
 
 //employees
 Route::get('employees/addemployee','PageController@getAddemployee');//load addemppage

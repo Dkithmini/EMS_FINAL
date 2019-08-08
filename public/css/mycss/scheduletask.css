@@ -6,12 +6,13 @@
 label{
 	width: 155px;
 	padding-left: 35px;
-	text-align: center;
+	text-align: left;
 	font-weight: normal;
 }
 
 input{
 	width: 140;
+	text-align: center;
 }
 
 input[type=date]{
@@ -20,6 +21,7 @@ input[type=date]{
 
 thead{
 	background-color: #E0E4E4;
+	font-weight: bold;
 }
 
 tbody{
@@ -39,7 +41,6 @@ h5{
 	font-size: 16px;
 	font-weight: bold;
 }
-
 
 form{
 	border-style: none;

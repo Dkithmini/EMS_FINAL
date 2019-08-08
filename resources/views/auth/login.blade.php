@@ -1,10 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+<link rel="stylesheet" type="text/css" href="{{ asset('css/mycss/login.css') }}">
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card card-default">
+            <!-- <div class="card card-default">
                 <div class="card-header">Login</div>
 
                 <div class="card-body">
@@ -40,15 +41,7 @@
                             </div>
                         </div>
 
-                        <!-- <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                    </label>
-                                </div>
-                            </div>
-                        </div> -->
+                       
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
@@ -63,7 +56,47 @@
                         </div>
                     </form>
                 </div>
-            </div>
+            </div> -->
+
+
+            <div class="login-form">
+                <form method="POST" action="{{ route('login') }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <div class="avatar">
+                        <img src="{{ asset('images/user.png') }}" alt="Avatar">
+                    </div>
+                    <h2 class="text-center">Login</h2> 
+                            
+                    <div class="form-group">
+                        <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus placeholder="Email">
+
+                        @if ($errors->has('email'))
+                            <span class="invalid-feedback">
+                                <strong>{{ $errors->first('email') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required placeholder="password">
+
+                        @if ($errors->has('password'))
+                            <span class="invalid-feedback">
+                                <strong>{{ $errors->first('password') }}</strong>
+                            </span>
+                        @endif
+                    </div>  
+                    <br>      
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Log in</button>
+                        
+                        <a class="btn btn-link" href="{{ route('password.request') }}" style="background-color:#ececec ">Forgot Your Password?
+                        </a>
+                    </div>
+                           
+                </form>
+            </div>    
         </div>
     </div>
 </div>

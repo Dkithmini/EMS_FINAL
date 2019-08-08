@@ -1,7 +1,8 @@
 @extends('SupervisorHome')
 
 @section('show_content')
-<div class="panel">
+<link rel="stylesheet" type="text/css" href="{{ asset('css/mycss/updatetask.css') }}">
+	<div class="panel">
 		<div class="panel-body">
 			<div class="col-md-12">
 				<h5>Task Details</h5>
@@ -9,8 +10,6 @@
 					<form>
 						<label>Task Id</label><input type="text" name="txtTaskid" id="taskid">
 						<button  id="searchtask" type="button">Search</button>
-						
-						<!-- <label>Qty</label><input type="number" name="txtQuantity" id="Tqty"> -->
 					</form>
 				</div>	
 			</div>
@@ -30,6 +29,7 @@
 									<td>Emp Name</td>
 									<td>Target Qty</td>
 									<td>Completed Qty</td>
+									<td>Action</td>
 								</tr>
 							</thead>
 							<tbody id="tbody1" class="tbody">
@@ -37,32 +37,58 @@
 							</tbody>
 						</table>
 					</div>
+
 					<div class="col-md-5">
 						<form id="frmupdatetask">
 							<input type="hidden" name="_token" value="{{ csrf_token() }}">
 							<input type="text" name="txtTaskid2" id="taskid2" hidden="">
-							<label>Employee Id</label><input type="text" name="txteid" id="eid"><br>
-							<label>Employee Name</label><input type="text" name="txtename" id="e_name"><br>
-							<label>Target Qty</label><input type="text" name="txttarget_qty" id="tqty"><br>
-							<label>Completed Qty</label><input type="text" name="txtcompleted_qty" id="cqty"><br><br>
+							<label>Employee Id</label><input type="text" name="txteid" id="eid" readonly=""><br>
+							<label>Employee Name</label><input type="text" name="txtename" id="e_name" readonly=""><br>
+							<label>Target Qty</label><input type="text" name="txttarget_qty" id="tqty" readonly=""><br>
+							<label>Completed Qty</label><input type="text" name="txtcompleted_qty" id="cqty" required=""><br><br>
+							<button type="reset" class="btn btn-danger" id="btncancel">Cancel</button>
 							<button type="button" id="btnsave" disabled="" class="btn btn-info">Save</button>
-							<button class="btn btn-danger" id="btncancel">Cancel</button>
+							
 						</form>
 					</div>
 				</div>	
 			</div>
 		</div>
 	</div>
+	<br>
+
+	<div class="col-md-12" id="summeryForm">
+		<label>Task Qty</label><input type="text" name="txtTot_TaskQty" id="tot_TaskQty">
+		<label>Completed</label><input type="text" name="txtTotCompleted" id="tot_Completed">
+		<label>Remainder</label><input type="text" name="txtRemainder" id="remainder">
+		<label>Extra</label><input type="text" name="txtExtra" id="extra">
+		<button type="button" id="btnrefresh" disabled="">Refresh</button>
+		<button type="button" id="btnupdatestatus" >Update</button>
+		<br><br>
+
+		<div class="progress" style="height: 30px;">
+			<div class="progress-bar bg-info " role="progressbar" aria-valuemax="100" id="taskprogressbar"><span class="caption"></span></div>
+		</div>
+	</div>
+
+	
 
 	<script type="text/javascript">
 
+		//search task by task id
 		$('#searchtask').click(function(){
 			var searchid=$('#taskid').val();
 			$('#taskid2').val(searchid);
 			get_TaskEmployees(searchid);
+
+			$('#btnrefresh').prop('disabled',false);
+			$('#btnrefresh').trigger('click');
+
+			// $('#taskprogressbar').width('0%').attr('aria-valuenow','0%');
+			// $("#taskprogressbar").children('span.caption').html('0%');	
 		});
 
-		//get emp list with targets
+		//display allocated emps and targets
 		function get_TaskEmployees(searchid=''){
 			$.ajax({
 				url:'/showtaskemp',
@@ -75,7 +101,7 @@
 					var result=JSON.parse(data);
 					// console.log(result);
 					
-					if(!result.length){
+					if(!result.length){				//if task not available/allocated
 						alert('Task Pending....!');
 					}
 					else{
@@ -88,10 +114,10 @@
 
 						showdata +="<tr>";
 						showdata +="<td>"+emp_Id+"</td><td>"+empname+"</td><td>"+targetqty+"</td><td>"+completed+"</td>";
-						if(targetqty===completed){
-							showdata +="<td><button type='button' id='btntableupdate' class='btn btn-info btn-sm' disabled=''>Completed</td>";
+						if(targetqty===completed || targetqty<completed){
+							showdata +="<td><i class='fas fa-check'></i></td>";
 						}
-						if(targetqty!==completed){
+						else{
 							showdata +="<td><button type='button' id='btntableupdate' class='btn btn-success btn-sm' >update</td>";
 						}
 						showdata +="</tr>";
@@ -120,25 +146,28 @@
 
 		});
 
+		
 		$('#btnsave').click(function(){
 			updateTask();
-			$('#btnsave').prop('disabled',true);
-			
+			$('#btnrefresh').trigger('click');
+
 		});
 
+		//validate update task form
 		$('#cqty').change(function(){
-			var qty_completed=$('#cqty').val();
-			var qty_target=$('#tqty').val();
+			var qty_completed=parseInt($('#cqty').val());
+			var qty_target=parseInt($('#tqty').val());
 
 			if(qty_completed!=''){
-				if(qty_completed===qty_target || qty_completed<qty_target ){
-					$('#btnsave').prop('disabled',false);
-				}
-				
-				else{
+				if(qty_completed<qty_target ){
 					alert('Invalid Qty for Completed Qty..!');
 					$('#cqty').val('');
 					$('#btnsave').prop('disabled',true);
+					
+				}
+				
+				else{
+					$('#btnsave').prop('disabled',false);
 				}
 			}
 			else{
@@ -146,6 +175,7 @@
 			}
 		});
 
+		//update task completion
 		function updateTask(){
 			$.ajax({
 			 	url:'/updatetask',
@@ -155,9 +185,80 @@
 			 	success:function(updated_task){
 			 		alert('updated successfully...');
 			 		$('#frmupdatetask').trigger("reset");
+			 		$('#btnsave').prop('disabled',true);
 			 	}
 			 });
 		}
+
+
+		$('#btnrefresh').click(function(){
+			var id=$('#taskid').val();
+			checkCompletion_Task(id);
+		});
+
+		//check completed task qty summery
+		function checkCompletion_Task($taskId=''){
+			var checkByTaskId=$('#taskid').val();
+			$.ajax({
+			 	url:'/checkTaskCompletion',
+			 	method:'get',
+			 	data: {'taskId':checkByTaskId},
+			 	
+			 	success:function(response){
+			 		// console.log(response);
+
+			 		var result=response.data;
+			 		var total=result[0].Qty;
+			 		var completed=0;
+
+			 		for(i=0;i<result.length;i++){
+			 			var qty_Completed=result[i].Completed_Qty;
+			 			completed=parseInt(completed+qty_Completed);
+			 		}
+
+			 		$('#tot_TaskQty').val(total);
+			 		$('#tot_Completed').val(completed);
+
+			 		var ratio_completed=Math.round((completed/total)*100);
+			 		$('#taskprogressbar').width(ratio_completed+'%').attr('aria-valuenow', ratio_completed+'%');
+			 		$("#taskprogressbar").children('span.caption').html(ratio_completed + '%');
+			 		
+			 		var remainderQty=parseInt(total-completed);
+
+			 		if(remainderQty<0){		//if excess qty produced
+			 			var extraQty=(remainderQty*(-1));
+			 			$('#remainder').val(0);
+			 			$('#extra').val(extraQty);
+			 		}
+			 		else{
+			 			$('#remainder').val(remainderQty);
+			 			$('#extra').val(0);
+			 		}
+			 		
+			 	}
+			 });
+		}
+
+		//update task status from allocated to completed on task completion
+		$('#btnupdatestatus').click(function(){
+			var remainder_Taskqty=parseInt($('#remainder').val());
+			var task_to_Update=$('#taskid').val();
+
+			if(remainder_Taskqty===0){
+				$.ajax({
+				 	url:'/changeState_completed',
+				 	headers:{'X-CSRF-TOKEN': '{{ csrf_token() }}'},
+				 	method:'post',
+				 	data:{'task_to_Update':task_to_Update},
+				 	
+				 	success:function(response){
+				 		alert(response.message);
+				 		
+				 	}
+			 	});
+			}
+		});
+ 
 
 
 	</script>

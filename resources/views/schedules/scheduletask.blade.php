@@ -1,6 +1,6 @@
- @extends('SupervisorHome')
+@extends('SupervisorHome')
 
-    @section('show_content')
+@section('show_content')
 <link rel="stylesheet" type="text/css" href="{{ asset('css/mycss/scheduletask.css') }}">
     <div class="panel">
         <div class="panel-body">
@@ -43,16 +43,15 @@
                 <div class="col-md-12">
                     <h5>Allocate Employees</h5>
 
-                    <form>
+                    <form id="frmemp_allocation">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <label>Task Id</label><input type="text" name="txtTaskid" id="tid" readonly=""><br>
+                        <label>Task Id</label><input type="text" name="txtTaskid" id="tid" readonly="">
                         <input type="text" name="txtSid" id="shed" hidden="">
                         <label>Section</label><input type="text" name="txtsec" id="section_name" readonly="">
                         <label>Time Slot</label><input type="text" name="txttime" id="time_slot" readonly="" >
                         <label>Item Code</label><input type="text" name="txtitem" id="code" readonly="" >
                         <label>Task Qty </label><input type="number" name="txtQty" id="quanty" readonly="">
-                        <label>Suggested Allocation</label><input type="number" name="txtNo_employees" id="no_of_emp"><label style="text-align: left;">emps.</label><br>
-                        <!-- <label>Target Qty</label><input type="number" name="txttarget" id="targetQty"><br><br> -->
+                        <label>Suggested Allocation</label><input type="text" name="txtNo_employees" id="no_of_emp" readonly="">
                         <label>Employees</label><input type="number" name="emps_count" id="emps_count">
                         <label>Target Qty</label><input type="number" name="txt_target" id="emp_targetQty">
                         <br><br>     
@@ -63,11 +62,8 @@
                     
                     <div class="row">
                         <div class="col-md-4" style="max-height: 180px;overflow-y: scroll;">
-                           <!-- <div id="emp_checklist" style="max-height: 150px;overflow: auto;max-width: 260px;">
-                            <ul id="selectemp" style="list-style: none;" class="list-group">
-                            </ul> 
-                            </div> -->
-                            <table class="table table-striped table-md">
+                          
+                            <table class="table table-striped table-md" id="tblemps">
                                 <thead>
                                     <tr>
                                         <th>Emp Id</th>
@@ -80,7 +76,7 @@
                             </table>
                         </div> 
                         <div class="col-md-4" style="max-height: 180px;">
-                           <table class="table table-condensed" >
+                           <table class="table table-striped" >
                                 <thead>
                                     <tr>
                                         <td>Emp Id</td>
@@ -94,11 +90,13 @@
                                 
                         </div>
                         <div class="col-md-4" style="max-height: 180px;">
-                            <label style="width: 200px;text-align: left;">Total Attended</label><input type="text" id="emp_attended"><br>
-                            <label style="width: 200px;text-align: left;">Unallocated Employees</label><input type="text" id="emp_free"><br><br> 
-                            <button class="btn btn-basic" type="Reset">Reset</button>
-                            <button class="btn btn-info" type="button" id="btnAllocate">Add</button>
-                            <button class="btn btn-success" type="button" id="btnfinish" disabled="">Finish</button>
+                            <label style="width: 200px;text-align: left;">Total Attended</label><input type="text" id="emp_attended" style="width: 80px;"><br>
+                            <label style="width: 200px;text-align: left;">Unallocated Employees</label><input type="text" id="emp_free" style="width: 80px;">
+                            <label style="width: 200px;text-align: left;">Count</label><input type="text" name="txtCountAllocated_SelectedTask" style="width: 80px;" id="allocatedCount">
+                            <br><br> 
+            
+                            <!-- <button class="btn btn-info" type="button" id="btnAllocate">Add</button> -->
+                            <button class="btn btn-info" type="button" id="btnfinish" disabled="">Finish</button>
                         </div>
                     </div>
                     
@@ -113,7 +111,6 @@
         
         //search schedule
         $('#btntaskallocation_search').click(function(){
-            
             var task_date=$('#sched_date').val();
             viewScheduleTasks(task_date);
             getAllAttendedCount(task_date);
@@ -207,7 +204,7 @@
 
         });
     
-        //get all emp ids
+        //get all ids of unallocated emps 
         function getUnallocatedEmployeeList(task_date=''){
             var task_date=$('#sched_date').val();
             var timeslot=$('#time_slot').val();
@@ -238,12 +235,12 @@
                     }
                     $('#emp_free').val(count+1);
                                 
-                    // console.log(result);
+                    console.log(result);
                 }       
             });
         }
 
-        //calculate suggested emps for the task
+        //calculate suggested employee count for the task
         function show_Suggested_Emps(){
             var section_Task=$('#section_name').val();
             var target_Qty=$('#quanty').val();
@@ -278,40 +275,49 @@
                 } 
             }
 
-            $('#no_of_emp').val(suggested_Emp_Count);
+            $('#no_of_emp').val(suggested_Emp_Count+'  emps.' );   //display suggested employee count
         }
 
         //remove newly allocated emps from checkbox list
-        $("#btnallocate_emp").click(function(event){
-            event.preventDefault();
-            var IDs = $(".checkid:checked").map(function(){
-            return $(this).val();
-            }).toArray();
-            console.log(IDs);
-            $(".checkid:checked").remove();
+        // $("#btnallocate_emp").click(function(event){
+        //     event.preventDefault();
+        //     var IDs = $(".checkid:checked").map(function(){
+        //     return $(this).val();
+        //     }).toArray();
+        //     console.log(IDs);
+        //     $(".checkid:checked").remove();
 
 
-        });
+        // });
 
         
-        //allocate employee
+        
+        //allocate selected employee for task
        $(document).on("click", ".selectEmployee", function(){
-            allocateEmployees();
-       });
+           var $row = $(this).closest("tr"),       // Finds the closest row <tr> 
+            $tds = $row.find("td"); 
+            var empid_toAllocate=($($tds[0]).text());  //get the value of id column
+            var taskid_toAllocate=$('#tid').val();
+            var task_Item=$('#code').val();
+            var emp_TargetQty=$('#emp_targetQty').val();
+            $(this).closest("tr").remove();
 
-        function allocateEmployees(){
+           
             $.ajax({
                 url:'/allocateemp',
+                headers:{'X-CSRF-TOKEN': '{{ csrf_token() }}'},
                 type:'post',
-                data: $('#frmemp_allocation').serialize(),
+                data: {'empid_toAllocate':empid_toAllocate,'taskid_toAllocate':taskid_toAllocate,'task_Item':task_Item,'emp_TargetQty':emp_TargetQty},
                 
-                success:function(data){
-                    alert('Employee allocated to the task...!');
+                success:function(response){
+                    // alert(response.message);
                     
-                    var result=JSON.parse(data);
+                    var result=response.data;
                     // console.log(result);
 
                     var showdata='';
+
+
                     var empid=result.Emp_Id;
                     var emp_target=result.Target_Qty;
 
@@ -319,28 +325,40 @@
                     showdata +="<td>"+empid+"</td><td>"+emp_target+"</td>";
                     showdata +="</tr>";
                     document.getElementById("tbody2").innerHTML+=showdata;
-                        
-                    $('#btnfinish').attr('disabled',false);
-                                
-                }       
-            });
-        }
 
-        //change status of task  after emp allocation
-        $('#btnfinish').click(function(){
-            var taskid=$('#tid').val();
-            $.ajax({
-                url:'/changetaskstatus',
-                type:'post',
-                headers:{'X-CSRF-TOKEN': '{{ csrf_token() }}'},
-                data:{'taskid':taskid},
-                
-                success:function(response){
-                    alert('Employees Allocation Completed..!');
-                    
-                    $('#frmemp_allocation').trigger("reset");           
+                     
+                    $('#btnfinish').attr('disabled',false);
+                    var allocated_Count=$('#tbody2').find('tr').length;
+                    $('#allocatedCount').val(allocated_Count);
+                               
                 }       
             });
+       });
+
+
+        //change status of task  after emp allocation completed
+        $('#btnfinish').click(function(){
+            // var taskid=$('#tid').val();
+            // $.ajax({
+            //     url:'/changetaskstatus',
+            //     type:'post',
+            //     headers:{'X-CSRF-TOKEN': '{{ csrf_token() }}'},
+            //     data:{'taskid':taskid},
+                
+            //     success:function(response){
+            //         alert('Employees Allocation Completed..!');
+                    
+            //         $('#frmemp_allocation').trigger("reset"); 
+            //         $("#empList").empty();
+            //         $("#tbody2").empty();
+            //         $('#allocatedCount').val('');
+            //     }       
+            // });
+
+            $('#frmemp_allocation').trigger("reset"); 
+            $("#empList").empty();
+            $("#tbody2").empty();
+            $('#allocatedCount').val('');
         })
 
         // function getItemCodes(taskid=''){
@@ -374,24 +392,21 @@
         //     showQtyItem_Ordered();
         // });
 
-        // $('#selected_qty').change(function(){
-        //     var selectet_itemqty=$('#selected_qty').val();
-        //     var totQty=$('#quanty').val();
-        //     var empcount=$('#no_of_emp').val();
+        $('#emps_count').change(function(){
+            var No_of_selected_emp=$('#emps_count').val();
+            var totQty=$('#quanty').val();
 
-        //     if(selectet_itemqty<totQty || selectet_itemqty===totQty){
-        //         var val=Math.round((empcount/totQty)*selectet_itemqty);
-        //         var t=selectet_itemqty/val;
-        //         $('#emps_count').val(val);
-        //         $('#emp_targetQty').val(t);
-        //     }
-        //     else{
-        //         alert('Invalid item qty entered..!Check the value and re-enter.');
-        //         $('#selected_qty').val('');
-        //         $('#emps_count').val('');
-        //         $('#emp_targetQty').val('');
-        //     }
-        // })
+            if(No_of_selected_emp===''){
+                $('#emp_targetQty').val('');
+            }
+
+            else {
+                var amount=Math.round(totQty/No_of_selected_emp);
+                $('#emp_targetQty').val(amount);
+            }
+           
+ 
+        });
 
 
         // function showQtyItem_Ordered(){

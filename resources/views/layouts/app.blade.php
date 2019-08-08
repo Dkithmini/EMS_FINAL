@@ -43,12 +43,12 @@
         
         <nav class="navbar navbar-expand navbar-dark bg-dark">
             <!-- <div class="container"> -->
-                <a class="sidebar-toggle mr-3" href="#"><i class="fa fa-bars fa-2x "></i></a>
-                <a class="navbar-brand" href="{{url('/')}}">EMS</a>
+               
+                <!-- <a class="navbar-brand" href="{{url('/')}}"><i class="fas fa-home"></i></a> -->
                 
-               <!--  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
-                </button> -->
+                </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
@@ -64,7 +64,7 @@
                             <li><a class="nav-link" href="{{ route('register') }}">Register</a></li>
                         @else
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {{ Auth::user()->name }} 
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -83,6 +83,7 @@
                         @endguest
                     </ul>
                 </div>
+                 <a class="sidebar-toggle mr-3" href="#"><i class="fa fa-bars fa-1x "></i></a>
             <!-- </div> -->
         </nav>
             

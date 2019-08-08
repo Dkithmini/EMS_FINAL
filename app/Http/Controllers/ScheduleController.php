@@ -109,6 +109,43 @@ class ScheduleController extends Controller
 
     }
 
+    // get items codes for selected order to be scheduled
+    public function getItemCodes(Request $taskid){
+        if($taskid->ajax()){
+            $req=$taskid->get('taskid');
+            if($req!=''){
+                $data=DB::table('schedules')
+                        ->join('daily_tasks','schedules.Schedule_Id','=','daily_tasks.Schedule_Id')
+                        ->where('Task_Id','like','%'.$req.'%')
+                        ->join('ordered_items','schedules.Order_Id','=','ordered_items.Order_Id')
+                        ->select('ordered_items.Item_Code')
+                        ->get();
+                
+                    return response()->json(['data'=>$data]);    
+                
+             }
+        }
+
+    }
+
+    // get total qty for items of selected order to be scheduled
+    public function getItemTotal(Request $request){
+        if($request->ajax()){
+            $req_sched=$request->get('ScheduleId');
+            $req_itemCode=$request->get('ItemId');
+            
+            $data=DB::table('schedules')
+                    ->join('ordered_items','schedules.Order_Id','=','ordered_items.Order_Id')
+                    ->where('Schedule_Id','like','%'.$req_sched.'%')
+                    ->select('ordered_items.Total_Qty')
+                    ->where('Item_Code','like','%'.$req_itemCode.'%')
+                    ->get();
+                
+                    return response()->json(['data'=>$data]);    
+                
+             
+        }
+    }
 
      //add tasks for schedule
     public function addTask(Request $req2){
@@ -194,52 +231,94 @@ class ScheduleController extends Controller
     }
 
     //get all employee ids unallocated
-    public function getComboboxData_Emp(Request $select_emp){
+    public function getUnallocated_Emp(Request $select_emp){
          if($select_emp->ajax()){
             $check_date=$select_emp->get('task_date');
             $check_time=$select_emp->get('timeslot');
             $state='allocated';
+            $x;
 
-                 $check_emp=DB::table('employee_allocation')
-                            ->join('daily_tasks','employee_allocation.Task_Id','=','daily_tasks.Task_Id')
-                            
+            if($check_time==='morning' || $check_time==='morning1'){
+                $check_emp=DB::table('daily_tasks')
+                            ->where('Date','like','%'.$check_date.'%')
+                            ->where('Time_Slot','=','morning1')
+                            ->orwhere('Time_Slot','=','morning')
+                            ->where('Status','like','%'.$state.'%')
+                            ->join('employee_allocation','employee_allocation.Task_Id','=','daily_tasks.Task_Id')
+                            ->pluck('employee_allocation.Emp_Id');
+                    $x=json_decode($check_emp,true);
+            }        
+
+            else if($check_time==='evening' || $check_time==='evening1'){
+                 $check_emp=DB::table('daily_tasks')
+                            ->where('Date','like','%'.$check_date.'%')
+                            ->where('Time_Slot','=','evening1')
+                            ->orwhere('Time_Slot','=','evening')
+                            ->where('Status','like','%'.$state.'%')
+                            ->join('employee_allocation','employee_allocation.Task_Id','=','daily_tasks.Task_Id')
+                            ->pluck('employee_allocation.Emp_Id');
+                    $x=json_decode($check_emp,true);
+            }
+
+            else{
+                 $check_emp=DB::table('daily_tasks')
                             ->where('Date','like','%'.$check_date.'%')
                             ->where('Time_Slot','like','%'.$check_time.'%')
                             ->where('Status','like','%'.$state.'%')
+                            ->join('employee_allocation','employee_allocation.Task_Id','=','daily_tasks.Task_Id')
                             ->pluck('employee_allocation.Emp_Id');
                     $x=json_decode($check_emp,true);
+            }
 
-
-                $attended_employees=DB::table('attendance')
+             $attended_employees=DB::table('attendance')
                         ->where('Date','like','%'.$check_date.'%')
                         ->where('Status','present')
                         ->pluck('Emp_Id');
                      $y=json_decode($attended_employees,true);   
 
-                $result=array_diff($y, $x);
+                $result=array_values(array_diff($y,$x));
 
-                // $array_ids = array_map(function ($array) {return $array['Emp_Id'];}, $data);
-                // $result = DB::table('employee')
-                //         ->whereIn('Emp_Id',$array_ids)
-                //         ->select('Emp_Name')
-                //         ->get();  
                 echo json_encode($result);
-             
+                
         }
     }
 
     //emp allocation
     public function allocateEmp(Request $allocate){
 
-            $task_id=$allocate->input('txtTaskid');
-            $emp_id=$allocate->input('txtemplist');
-            $targetqty=$allocate->input('txttarget');
+            $task_id=$allocate->get('taskid_toAllocate');
+            $emp_id=$allocate->get('empid_toAllocate');
+            $task_item=$allocate->get('task_Item');
 
-            $data=array('Emp_Id'=>$emp_id,'Task_Id'=>$task_id,'Target_Qty'=>$targetqty);
+            $targetqty=$allocate->get('emp_TargetQty');
+
+            $data=array('Emp_Id'=>$emp_id,'Task_Id'=>$task_id,'Item_Code'=>$task_item,'Target_Qty'=>$targetqty);
 
             DB::table('employee_allocation')->insert($data);
-           echo json_encode($data);
+
+            $update_status=DB::table('daily_tasks') 
+                    ->where('Task_Id', $task_id) 
+                    ->limit(1) 
+                    ->update(['Status' => "allocated"]);
+           // echo json_encode($data);
+            return response()->json(['message'=>'Emplloyee Allocated for the Task','data'=>$data]);
     }
+
+    //get count of all attended employees for the date
+    public function getAttendedEmpCount(Request $request){
+       if($request->ajax()){
+            $req_date=$request->get('');
+            $state_present='present';
+            
+            $data=DB::table('attendance')
+                    ->where('Date','like','%'.$req_date.'%')
+                    ->where('Status','like','%'.$state_present.'%')
+                    ->pluck('attendance.Emp_Id');
+                
+            return response()->json(['data'=>$data]);                
+        } 
+    }
+
 
     //search task
     function viewAllocatedTask(Request $task){
@@ -278,15 +357,15 @@ class ScheduleController extends Controller
         }
     }
 
-    public function finishEmpAllocation(Request $finished){
-        $req=$finished->get('taskid');
-         $update_status=DB::table('daily_tasks') 
-                    ->where('Task_Id', $req) 
-                    ->limit(1) 
-                    ->update(['Status' => "allocated"]);
+    // public function finishEmpAllocation(Request $finished){
+    //     $req=$finished->get('taskid');
+    //     $update_status=DB::table('daily_tasks') 
+    //                 ->where('Task_Id', $req) 
+    //                 ->limit(1) 
+    //                 ->update(['Status' => "allocated"]);
         
         
-    }
+    // }
 
     public function displayTaskSizes(Request $req2){
         if($req2->ajax()){
@@ -304,6 +383,7 @@ class ScheduleController extends Controller
         }
     }
 
+    //update task completion by employees
     public function updateTaskCompletion(Request $update_Task){
         if($update_Task !=''){
             $emp_Id=$update_Task->input('txteid');
@@ -322,6 +402,24 @@ class ScheduleController extends Controller
         
     }
 
+    public function getTaskQtyCompleted(Request $request){
+         if($request->ajax()){
+            $Taskid=$request->get('taskId');
+
+            if($Taskid!=''){
+               $data=DB::table('daily_tasks')
+                        ->join('employee_allocation','daily_tasks.Task_Id','=','employee_allocation.Task_Id')
+                        ->select('daily_tasks.Qty','employee_allocation.Completed_Qty')
+                        ->where('employee_allocation.Task_Id','like','%'.$Taskid.'%')
+                        ->get();
+                       
+                    
+                return response()->json(['data'=>$data]);
+             }
+        }
+    }
+
+    //dispaly all tasks
     public function showAllTasks(){
         $allTasks=DB::table('daily_tasks')
                     ->where('Status','=','allocated')
@@ -329,55 +427,50 @@ class ScheduleController extends Controller
         return response()->json(['data'=>$allTasks]);
     }   
 
-    public function getItemCodes(Request $taskid){
-        if($taskid->ajax()){
-            $req=$taskid->get('taskid');
-            if($req!=''){
-                $data=DB::table('schedules')
-                        ->join('daily_tasks','schedules.Schedule_Id','=','daily_tasks.Schedule_Id')
-                        ->where('Task_Id','like','%'.$req.'%')
-                        ->join('ordered_items','schedules.Order_Id','=','ordered_items.Order_Id')
-                        ->select('ordered_items.Item_Code')
-                        ->get();
-                
-                    return response()->json(['data'=>$data]);    
-                
-             }
-        }
-
-    }
-
-    public function getItemTotal(Request $request){
+    public function showAlltasksByDate(Request $request){
         if($request->ajax()){
-            $req_sched=$request->get('ScheduleId');
-            $req_itemCode=$request->get('ItemId');
-            
-            $data=DB::table('schedules')
-                    ->join('ordered_items','schedules.Order_Id','=','ordered_items.Order_Id')
-                    ->where('Schedule_Id','like','%'.$req_sched.'%')
-                    ->select('ordered_items.Total_Qty')
-                    ->where('Item_Code','like','%'.$req_itemCode.'%')
-                    ->get();
-                
-                    return response()->json(['data'=>$data]);    
-                
-             
+            $date_to_Search=$request->get('dateToSearch');
+           
+            if($date_to_Search!=''){
+                $data=DB::table('daily_tasks')
+                            ->where('Date','like','%'.$date_to_Search.'%')
+                            ->get();
+
+                return response()->json(['data'=>$data]);    
+            }
         }
     }
 
-    public function getAttendedEmpCount(Request $request){
-       if($request->ajax()){
-            $req_date=$request->get('');
-            $state_present='present';
-            
-            $data=DB::table('attendance')
-                    ->where('Date','like','%'.$req_date.'%')
-                    ->where('Status','like','%'.$state_present.'%')
-                    ->pluck('attendance.Emp_Id');
-                
-                    return response()->json(['data'=>$data]);    
-                
-             
-        } 
+    public function changeTaskState_Completed(Request $request){
+        if($request->ajax()){
+            $taskCompleted=$request->get('task_to_Update');
+            $state_ofTask='Completed';
+
+            if($taskCompleted!=''){
+                $updated_state=DB::table('daily_tasks') 
+                    ->where('Task_Id', $taskCompleted) 
+                    ->limit(1) 
+                    ->update([ 'Status' => $state_ofTask]);
+
+                return response()->json(['message'=>'Updated Successfully']);    
+            }
+        }
     }
+
+    
+    public function getSchedsCompleted(Request $request){
+        if($request->ajax()){
+            $sched_ById=$request->get('schedId');
+            $state_ofShed='completed';
+
+            if($sched_ById!=''){
+                $shed_state_summery=DB::table('daily_tasks') 
+                    ->where('Schedule_Id', $sched_ById) 
+                    ->pluck('daily_tasks.Status');
+                return response()->json(['data'=>$shed_state_summery]);    
+            }
+        }
+    }
+
+
 }

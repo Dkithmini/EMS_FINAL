@@ -1,10 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+<link rel="stylesheet" type="text/css" href="{{ asset('css/mycss/signup.css') }}">
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card card-default">
+           <!--  <div class="card card-default">
                 <div class="card-header">Register</div>
 
                 <div class="card-body">
@@ -82,7 +83,68 @@
                         </div>
                     </form>
                 </div>
-            </div>
+            </div> -->
+
+
+
+            <div class="signup-form">
+                <form method="POST" action="{{ route('register') }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <div class="avatar">
+                        <img src="{{ asset('images/signup.png') }}" alt="Avatar">
+                    </div>
+                    <h2 class="text-center" style="margin-top: 5px;">Register</h2> 
+                            
+                    <div class="form-group">
+                        <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus placeholder="Name">
+
+                        @if ($errors->has('name'))
+                            <span class="invalid-feedback">
+                                <strong>{{ $errors->first('name') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                       <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required placeholder="Email">
+
+                        @if ($errors->has('email'))
+                            <span class="invalid-feedback">
+                                <strong>{{ $errors->first('email') }}</strong>
+                            </span>
+                        @endif
+                    </div> 
+
+                    <div class="form-group">
+                        <select name="role" class="form-control" >
+                            <option value="admin">Admin</option>
+                            <option value="manager">Manager</option>
+                            <option value="supervisor">Supervisor</option>
+                        </select> 
+
+                    </div> 
+
+                    <div class="form-group">
+                        <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required placeholder="password">
+
+                        @if ($errors->has('password'))
+                            <span class="invalid-feedback">
+                                <strong>{{ $errors->first('password') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required placeholder="confirm password">
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit"  class="btn btn-primary btn-lg btn-block">Register</button>
+                    </div>
+                           
+                </form>
+            </div>    
+
         </div>
     </div>
 </div>
