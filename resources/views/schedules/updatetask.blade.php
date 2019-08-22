@@ -66,6 +66,7 @@
 		<button type="button" id="btnupdatestatus" >Update</button>
 		<br><br>
 
+		<h5>Task Completion Progress</h5>
 		<div class="progress" style="height: 30px;">
 			<div class="progress-bar bg-info " role="progressbar" aria-valuemax="100" id="taskprogressbar"><span class="caption"></span></div>
 		</div>
@@ -102,7 +103,8 @@
 					// console.log(result);
 					
 					if(!result.length){				//if task not available/allocated
-						alert('Task Pending....!');
+						// alert('Task Pending....!');
+						window.popWindow.dialog("No Allocated Task Available For given Id..!","error");
 					}
 					else{
 						for(i=0;i<result.length;i++){
@@ -160,7 +162,9 @@
 
 			if(qty_completed!=''){
 				if(qty_completed<qty_target ){
-					alert('Invalid Qty for Completed Qty..!');
+					// alert('Invalid Qty for Completed Qty..!');
+					window.popWindow.dialog("Invalid Quantity..!(Please Enter Value either Equal or Grater than Target Quanity)","error");
+
 					$('#cqty').val('');
 					$('#btnsave').prop('disabled',true);
 					
@@ -171,7 +175,8 @@
 				}
 			}
 			else{
-				alert('Enter Completed Qty..!');
+				// alert('Enter Completed Qty..!');
+				window.popWindow.dialog("Please Enter Value of Completed Quantity..!","error");
 			}
 		});
 
@@ -183,7 +188,9 @@
 			 	data:$('#frmupdatetask').serialize(),
 			 	
 			 	success:function(updated_task){
-			 		alert('updated successfully...');
+			 		// alert('updated successfully...');
+			 		window.popWindow.dialog("Task Competion Saved Successfully..!","success");
+
 			 		$('#frmupdatetask').trigger("reset");
 			 		$('#btnsave').prop('disabled',true);
 			 	}
@@ -252,8 +259,9 @@
 				 	data:{'task_to_Update':task_to_Update},
 				 	
 				 	success:function(response){
-				 		alert(response.message);
-				 		
+				 		// alert(response.message);
+				 		var alert_message=response.message;
+				 		window.popWindow.dialog(alert_message,"info");
 				 	}
 			 	});
 			}

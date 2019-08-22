@@ -2,9 +2,9 @@
 
 @section('show_content')
 <link rel="stylesheet" type="text/css" href="{{ asset('css/mycss/viewschedule.css') }}">
+
 	<div class="panel">
 		<div class="panel-body" >
-
 			<div class="col-md-12">
 				<h5>Schedule Details</h5>
 				<form id="frmshed">
@@ -53,12 +53,15 @@
 	<div class="panel">
 		<div class="panel-body">
 			<div>
-				<label>Total Tasks Scheduled</label><input type="text" name="txtTotal_scheduled" id="totalScheduled">
-				<label>Total Allocated</label><input type="text" name="txtAllocated" id="totalallocated">
-				<label>Total Completed</label><input type="text" name="txtCompleted" id="totalcompleted">
-				<button type="button" id="btnRefresh">Refresh</button>
+				<label>Scheduled Tasks</label><input type="text" name="txtTotal_scheduled" id="totalScheduled">
+				<label>Processing Tasks</label><input type="text" name="txtAllocated" id="totalallocated">
+				<label>Pending Tasks</label><input type="text" name="txtPending" id="totalpending">
+				<label>Completed Tasks</label><input type="text" name="txtCompleted" id="totalcompleted"><br>
+				<button type="button" id="btnRefresh" disabled="">Refresh</button>
+				<button type="button" id="btnupdatestatus">Update</button><br>
 			</div>
 			<br>
+			<h5>Schedule Progress</h5>
 			<div class="progress" style="height: 30px;" >
 				<div class="progress-bar bg-info" role="progressbar" aria-valuemax="100" id="scheduleprogressbar"><span class="caption"></span>
 				</div>
@@ -74,10 +77,12 @@
 			var searchid=$('#sheduleid').val();
 			viewSchedule(searchid);
 			viewScheduleTasks(searchid);
+
+			$('#btnRefresh').prop('disabled',false);
 			$('#btnRefresh').trigger('click');
 		});
 		
-
+		//dispaly schedule tasks for schedules when search by sched id
 		function viewScheduleTasks(searchid=''){
 			$.ajax({
 				url:'/searchschedulebyid',
@@ -88,7 +93,7 @@
 					var showdata='';
 					// console.log(data);
 					var result=response.data;
-					console.log(result);
+					// console.log(result);
 					
 					for(i=0;i<result.length;i++){
 						// var sid=result[i].Schedule_Id;
@@ -114,11 +119,11 @@
 						document.getElementById("tbody1").innerHTML=showdata;
 						
 					}
-
 				}	  	
 			});
 		}
 
+		//display schedule details
 		function viewSchedule(searchid=''){
 			$.ajax({
 			 	url:'/searchsched',
@@ -130,7 +135,8 @@
 			 		var result=response.data;
 
 			 		if(!result.length){
-				 		alert('Schedule not Available..!');
+				 		// alert('Schedule not Available..!');
+				 		window.popWindow.dialog("Schedule Not Available for Selected Id..!","error");
 				 		$('#frmshed').trigger("reset");
 				 		
 			 		}
@@ -156,8 +162,9 @@
 		$('#btnRefresh').click(function(){
 			var checkBySchedId=$('#sheduleid').val();
 			checkSheduleCompletionState(checkBySchedId);
-		})
+		});
 
+		//check state of schedule completion
 		function checkSheduleCompletionState(checkBySchedId=''){
 			$.ajax({
 				url:'/checkSchedCompletion',
@@ -170,6 +177,7 @@
 			 		var count_completed=0;
 			 		var count_total=0;
 			 		var count_allocated=0;
+			 		var count_pending=0;
 
 			 		for(i=0;i<result.length;i++){
 			 			var temp=result[i];
@@ -181,11 +189,15 @@
 			 			if(temp==='allocated'){
 			 				count_allocated=parseInt(count_allocated+1);
 			 			}
+			 			if(temp==='pending'){
+			 				count_pending=parseInt(count_pending+1);
+			 			}
 			 		}
 			 		
 			 		$('#totalScheduled').val(count_total);
 			 		$('#totalallocated').val(count_allocated);
 			 		$('#totalcompleted').val(count_completed);
+			 		$('#totalpending').val(count_pending);
 
 			 		var ratio_completed=Math.round((count_completed/count_total)*100);
 			 		$('#scheduleprogressbar').width(ratio_completed+'%').attr('aria-valuenow', ratio_completed+'%');
@@ -193,5 +205,27 @@
 			 	}
 			})
 		}
+
+
+		//update schedule status from 'created to completed' on completion of all tasks
+		$('#btnupdatestatus').click(function(){
+			var schedule_to_Update=$('#sheduleid').val();
+			var total_Tasks=$('#totalScheduled').val();
+			var completed_Tasks=$('#totalcompleted').val();
+
+			if(total_Tasks===completed_Tasks){
+				$.ajax({
+				 	url:'/changeScheduleState',
+				 	headers:{'X-CSRF-TOKEN': '{{ csrf_token() }}'},
+				 	method:'post',
+				 	data:{'schedule_to_Update':schedule_to_Update},
+				 	
+				 	success:function(response){
+				 		alert(response.message);
+				 		
+				 	}
+			 	});
+			}
+		});
 	</script>
 @endsection

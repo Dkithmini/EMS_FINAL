@@ -27,8 +27,12 @@ Route::get('/manager','HomeController@managerDashboard')->middleware('manager');
 
 //dashboard
 Route::get('dashboard/managerdashboard','PageController@getManagerDashboard');
-Route::get('/managerdash_allshedules','ScheduleController@ViewAllSchedules');
-Route::get('/managerdash_allTasks','ScheduleController@showAllTasks');
+Route::get('/dashboardcontent','ScheduleController@dashboardContent');
+Route::get('/attendanceSummery','ScheduleController@getAttendanceSummary');
+Route::get('/workSummery','ScheduleController@getWorkSummary');
+// Route::get('/managerdash_allshedules','ScheduleController@ViewAllSchedulesCount');
+// Route::get('/managerdash_pendingTasks','ScheduleController@showAllTasksCount');
+// Route::get('/managerdash_completedTasks','ScheduleController@showFinishedTasksCount');
 
 //orders
 
@@ -77,6 +81,8 @@ Route::post('/updatetask','ScheduleController@updateTaskCompletion');//update ta
 Route::get('/checkTaskCompletion','ScheduleController@getTaskQtyCompleted');//check comlpleted qty by employees
 Route::post('/changeState_completed','ScheduleController@changeTaskState_Completed');//change task state from allocated to completed
 Route::get('/checkSchedCompletion','ScheduleController@getSchedsCompleted');// check states of schedule
+Route::post('/changeScheduleState','ScheduleController@changeScheduleState_Completed');//change schedule status to completed
+
 
 //employees
 Route::get('employees/addemployee','PageController@getAddemployee');//load addemppage
@@ -100,3 +106,7 @@ Route::post('/recordattendance','AttendanceController@recordAttendance');//recor
 Route::get('/viewunmarked','AttendanceController@viewUnmarkedEmpList');//display unmarked emp list
 Route::get('/viewAttendance','AttendanceController@viewAttendance');//display all attendance
 
+//reports
+Route::get('reports/attendanceReports','PageController@getReports');//load reports
+Route::get('getAllattendancereport','ReportController@get_AttendanceRecords');//load reports allorders
+Route::post('reports/showpdf','ReportController@showPDF');//load reports allorders

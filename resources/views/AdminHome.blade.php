@@ -15,6 +15,9 @@
    <script src="{{ asset('js/bootadmin.min.js') }}"></script>
    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 
+   <link rel="stylesheet" href="{{ asset('css/popWindow.css') }}">
+    <script src="{{ asset('js/popWindow.js') }}"></script>
+
     <title>Admin Login</title>
 </head>
 <body class="bg-light">

@@ -50,3 +50,10 @@
         color: #7a7a7a;
         text-decoration: none;
     }
+
+    .login-form .btn-link{
+        background-color:#ececec;
+        font-weight: normal;
+        color: #7a7a7a;
+        padding-left: 20px;
+    }

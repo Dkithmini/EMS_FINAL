@@ -91,7 +91,7 @@
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary btn-lg btn-block">Log in</button>
                         
-                        <a class="btn btn-link" href="{{ route('password.request') }}" style="background-color:#ececec ">Forgot Your Password?
+                        <a class="btn btn-link" href="{{ route('password.request') }}">Forgot Your Password?
                         </a>
                     </div>
                            

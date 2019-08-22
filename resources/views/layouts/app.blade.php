@@ -37,6 +37,7 @@
         font-size: medium;
         height: 50px;
     }
+    
     </style>
     <div id="app">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">  

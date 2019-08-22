@@ -29,13 +29,14 @@
         font-size: 280%;
         font-weight:bolder;
         color: white;
-
+        text-align: center;
     }
 
     .jumbotron{
        margin-top: 50px;
        /*background: rgba(200, 54, 54, 0.5);*/
        background: #413F3F;
+       
     }
 </style>
 @endsection

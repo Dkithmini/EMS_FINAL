@@ -73,7 +73,7 @@ class OrderController extends Controller{
 	// }
 
 	public function addItemSizes(Request $request){
-		//ordered sizes table
+
 		$sizes_record=array();
 		$sizes_record=$request->get('Size_Table');
 
@@ -86,6 +86,7 @@ class OrderController extends Controller{
 		// $addorder=DB::table('placed_orders')->insert($orderDetails);
 		$temp=DB::table('placed_orders')->where('Order_Id','=',$orderid)->exists();
 
+		//retrieve data in the request array
 		if($temp===true){
 			if($sizes_record!=''){
 				for($i=0;$i<count($sizes_record);$i++){
@@ -98,6 +99,14 @@ class OrderController extends Controller{
 					$XXL=$sizes_record[$i]['size_xxl'];
 					$totQty=$sizes_record[$i]['totqty'];
 
+					//Add details to ordered_items table
+					$orderedItems=array('Order_Id'=>$orderid,'Item_Code'=>$itemId,'Total_Qty'=>$totQty);
+					$additem=DB::table('ordered_items')->insert($orderedItems);
+					if(!$additem){
+						return response()->json(['success'=>false,'message'=>'Error.Failed to Add Order Items..!']);
+					}
+
+					// put order item sizes to an array
 					$sizearr=array(
 						array('size_name'=>'xs','value'=>$xs),
 						array('size_name'=>'s','value'=>$small),
@@ -107,32 +116,29 @@ class OrderController extends Controller{
 						array('size_name'=>'xxl','value'=>$XXL)
 					);
 
+					//add item sizes to ordered_sizes table
 					foreach($sizearr as $var ){		
 						$name=$var['size_name'];
 						$qty=$var['value'];
 						$itemsizes=array('Order_Id'=>$orderid,'Item_Code'=>$itemId,'Size'=>$name,'Qty'=>$qty);
 						$addsizes=DB::table('ordered_sizes')->insert($itemsizes);
 						if(!$addsizes){
-							return response()->json(['success'=>false,'message'=>'Error.Item sizes Not Added..!']);
+							return response()->json(['success'=>false,'message'=>'Error.Item Sizes Not Added..!']);
 						}
 					}
-
-					$orderedItems=array('Order_Id'=>$orderid,'Item_Code'=>$itemId,'Total_Qty'=>$totQty);
-					$additem=DB::table('ordered_items')->insert($orderedItems);
-					if(!$additem){
-						return response()->json(['success'=>false,'message'=>'Error.Item Not Added..!']);
-					}
+					
 				}
 
+				return response()->json(['success'=>true,'message'=>'Order Addition Completed Successsfully..!']);
 			}
 			else{
-				return response()->json(['success'=>false,'message'=>'Error.Item Details not found..!']);
+				return response()->json(['success'=>false,'message'=>'Error.No Item Details Found to Add..!']);
 			}
-			return response()->json(['success'=>true,'message'=>'Order Addition Completed Successsfully..!']);
+			
 		}
 
 		else{
-			return response()->json(['success'=>false,'message'=>'Error.Order Details Not Added..!']);
+			return response()->json(['success'=>false,'message'=>'Error.Order not found to Add Details..!']);
 		}
 			
 			

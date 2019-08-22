@@ -2,6 +2,7 @@
 
 @section('show_content')
 <link rel="stylesheet" type="text/css" href="{{ asset('css/mycss/vieworder.css') }}">
+
 <!--All orders panel-->
 	<div class="panel" >
 		<h5>All Orders</h5>
@@ -42,9 +43,9 @@
 		</div>
 
 	</div>
-	<!--End all orders panel-->
+<!--End all orders panel-->
 
-	<!--Order details panel-->
+<!--Order details panel-->
 	<div class="panel" >
 		<h5>Order Details</h5>
 		<input type="text" name="txtid" hidden="">
@@ -62,25 +63,14 @@
 						
 						</tbody>
 					</table>
-					<!-- <div class="form-group">
-								
-								<label>Item Code</label>
-								<input type="text" name="txtOrderDate" id="viewordericode" readonly="">
-								<label>Item</label>
-								<input type="text" name="txtDueDate"  id="viewitem" readonly=""><br>
-								<label>Description</label>
-								<input type="text" name="txtCusName"  id="viewdescription" readonly="">
-								<label>Total Qty</label><input type="text" name="txtno_of_items" style="width: 100px" id="viewtotqty" readonly="">
-								
-					</div> -->
-
 					<br>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!--End order details panel-->
+<!--End order details panel-->
 
+<!--Order item sizes panel-->
 	<div class="panel" >
 		<h5>Item Sizes</h5>
 		<input type="text" name="txtid" hidden="">
@@ -104,19 +94,21 @@
 			</div>
 		</div>
 	</div>
+<!--End of Order item sizes panel-->
 
 	<script type="text/javascript">
 		$(document).ready(function() {
     		$("#SearchOrderById").click(function() {
     			var searchid=$('#SearchId').val();
     			SearchById(searchid);
-    			DisplayOrderItems(searchid);	
+    			// DisplayOrderItems(searchid);	
     			DisplayOrderSizes(searchid);
+    		});
     	});
-    });
 
+		//Search order by id
 		function SearchById(searchid='') {
-			 $.ajax({
+			$.ajax({
 			 	url:'/searchOrderById',
 			 	method:'get',
 			 	data:{'search_id':searchid},
@@ -150,44 +142,41 @@
 				 	}
 			 	}
 			 		
-			 });
+			});
 		}
 
-		function DisplayOrderItems(searchid='') {
-			 $.ajax({
-			 	url:'/displaydetails',
-			 	method:'get',
-			 	data:{'search_id':searchid},
-			 	// dataType:'json',
-			 	success:function(response){
-			 		var show_order_details='';
-					var items=response.data;
-			 		console.log(response.data);
+		//Display order details
+		// function DisplayOrderItems(searchid='') {
+		// 	$.ajax({
+		// 	 	url:'/displaydetails',
+		// 	 	method:'get',
+		// 	 	data:{'search_id':searchid},
+		// 	 	// dataType:'json',
+		// 	 	success:function(response){
+		// 	 		var show_order_details='';
+		// 			var items=response.data;
+		// 	 		console.log(response.data);
 
-			 		for(i=0;i<items.length;i++){
-				 			var item_code=items[i].Item_Code;
-				 			var tot_qty=items[i].Total_Qty;
+		// 	 		for(i=0;i<items.length;i++){
+		// 		 			var item_code=items[i].Item_Code;
+		// 		 			var tot_qty=items[i].Total_Qty;
 				 			
-				 			
-				 				show_order_details +="<tr>";
-								show_order_details +="</td><td>"+item_code+"</td><td>"+tot_qty+"</td>";
-								show_order_details +="</tr>";
+		// 		 			show_order_details +="<tr>";
+		// 					show_order_details +="</td><td>"+item_code+"</td><td>"+tot_qty+"</td>";
+		// 					show_order_details +="</tr>";
 
-							
-						// // 		$('#viewordericode').val(item_code);
-						// // 		$('#viewitem').val(item);
-						// // 		$('#viewdescription').val(item_description);
-						// // 		$('#viewtotqty').val(tot_qty);
+		// 				// // 		$('#viewordericode').val(item_code);
+		// 				// // 		$('#viewitem').val(item);
+		// 				// // 		$('#viewdescription').val(item_description);
+		// 				// // 		$('#viewtotqty').val(tot_qty);
 								
-								document.getElementById("tbody2").innerHTML=show_order_details;
-				 			
-				 		}
-			 		
+		// 					document.getElementById("tbody2").innerHTML=show_order_details;
+		// 		 	}
+		// 	 	}
+		// 	});
+		// }
 
-			 	}
-			 });
-		}
-
+		//Display order sizes
 		function DisplayOrderSizes(searchid=''){
 			$.ajax({
 			 	url:'/displaysizes',
@@ -200,19 +189,19 @@
 
 			 		var size_details=JSON.parse(sizeqty);
 			 		for(i=0;i<size_details.length;i++){
-				 			var icode=size_details[i].Item_Code;
-				 			var size_name=size_details[i].Size;
-				 			var quantity=size_details[i].Qty;
+				 		var icode=size_details[i].Item_Code;
+				 		var size_name=size_details[i].Size;
+				 		var quantity=size_details[i].Qty;
 				 			
-				 			if(quantity!=0){
-				 				show_size +="<tr>";
-								show_size +="<td>"+icode+"</td><td>"+size_name+"</td><td>"+quantity+"</td>";
-								show_size +="</tr>";
-								document.getElementById("tbody3").innerHTML=show_size;
-				 			}
+						if(quantity!=0){
+				 			show_size +="<tr>";
+							show_size +="<td>"+icode+"</td><td>"+size_name+"</td><td>"+quantity+"</td>";
+							show_size +="</tr>";
+							document.getElementById("tbody3").innerHTML=show_size;
 				 		}
+				 	}
 			 	}
-			 });
+			});
 		}
 	</script>
 

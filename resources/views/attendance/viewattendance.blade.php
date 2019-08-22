@@ -12,7 +12,7 @@
 				<h5>View Attendance</h5>
 				<form >
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
-					<label>Year</label>
+					<!-- <label>Year</label>
 					<select>
 						<option>2019</option>
 						<option>2018</option>
@@ -24,7 +24,7 @@
 						<option>Jan</option>
 						<option>Feb</option>
 						<option>Mar</option>
-					</select>
+					</select> -->
 					<label>Date</label><input type="date" name="txtbydate" id="searchbydate">
 					<button type="button" id="btnshow">Show</button>
 				</form>
@@ -71,7 +71,9 @@
 	                	// console.log(att_data);
 	                	var data=JSON.parse(att_data);
 	                	if(!data.length){
-	                		alert('No Record Found for selected date!');	
+	                		// alert('No Record Found for selected date!');	
+	                		window.popWindow.dialog("No Attendance Records Found for Selected Date...!","error");
+
 	                		var showdata='';
 	                		document.getElementById("tbody").innerHTML=showdata;
 	                	}

@@ -100,16 +100,23 @@
 		//update employee
 
 		$('#btnUpdateEmployee').click(function(){
+			window.popWindow.dialog("Do You Need To Update the Employee Details?","confirm",{onOk:function(){
+				updateEmployee();
+			}})
+		});
+
+		function updateEmployee(){
 			 $.ajax({
 			 	url:'/updateemployee',
 			 	method:'post',
 			 	data:$('#frmupdateemployee').serialize(),
 			 	
 			 	success:function(update){
-			 		alert('updated..');
+			 		// alert('updated..');
+			 		window.popWindow.dialog("Employee Details Updated Successfully..!","success");
 			 	}
 			 });
-		});
+		}
 
 	</script>
 @endsection

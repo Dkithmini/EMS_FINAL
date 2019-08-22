@@ -12,9 +12,15 @@
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 
     <script src="{{ asset('js/jquery.min.js') }}"></script>
-   <script src="{{ asset('js/bootadmin.min.js') }}"></script>
-   <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('js/bootadmin.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 
+    <link rel="stylesheet" href="{{ asset('css/popWindow.css') }}">
+    <script src="{{ asset('js/popWindow.js') }}"></script>
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
+     <script src="{{ asset('js/html2canvas.min.js') }}"></script>
     <title>Admin Login</title>
 </head>
 <body class="bg-light">
@@ -86,7 +92,7 @@
 	                <li><a href="#">Manage Leaves</a></li>
                 </ul>
             </li>
-            <li><a href="#"><i class="fa fa-fw fa-chart-bar"></i>Reports</a></li>
+            <li><a href="{{url('reports/attendanceReports')}}"><i class="fa fa-fw fa-chart-bar"></i>Reports</a></li>
         </ul>
     </div>
 

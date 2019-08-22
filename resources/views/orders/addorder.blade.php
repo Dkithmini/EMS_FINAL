@@ -2,117 +2,114 @@
 
 @section('show_content')
 <link rel="stylesheet" type="text/css" href="{{ asset('css/mycss/addorder.css') }}">
-<!--Enter order details panel-->
-		<div class="panel">
-			<div class="panel-body">
-				<div class="col-md-12" style="margin-top: 5px;margin-bottom: 5px;" id="sec1">
-					<h5>Enter Order Details</h5>
-					<div class="row">
-						<form id="frmorder" method="post" action="/addorder">
-						<input type="hidden" name="_token" value="{{ csrf_token() }}">	
-							<div class="form-group">
-								<label>Order ID</label>
-								<input type="number" name="txtOrderId" id="orderid" readonly="" >
-								<label>Order Date</label>
-								<input type="date" name="txtOrderDate" required="" id="orderdate">
-								<!-- <label>Last Order Due-Date</label>
-								<input type="text" name="txtLastDueOrder"><br>
-								<label>Last Sheduled Date</label>
-								<input type="text" name="txtLastDueShed"><br> -->
-								<label>Due Date</label>
-								<input type="Date" name="txtDueDate" required="" id="duedate"><br><br>
-								<label>Customer </label>
-								<input type="text" name="txtCusName" id="cusname" required="">
-								<!-- <label>Total No of Items</label><input type="text" name="txtno_of_items" style="width: 100px"> -->
-								<br>
-							</div>
-						</form>
-					</div>	
-				</div>
 
-				<div class="col-md-12" style="margin-bottom: 5px; ">
-					<h5> Order Items</h5>
-					<form id="frmitemdetails">
-					<input type="hidden" name="_token" value="{{ csrf_token() }}">
+<!--Enter order details panel-->
+	<div class="panel">
+		<div class="panel-body">
+			<div class="col-md-12" style="margin-top: 5px;margin-bottom: 5px;" id="sec1">
+				<h5>Enter Order Details</h5>
+				<div class="row">
+					<form id="frmorder" method="post" action="/addorder">
+						<input type="hidden" name="_token" value="{{ csrf_token() }}">	
 						<div class="form-group">
-							<input type="text" name="txtOrderId2" id="id" hidden="">
-							<label>Item Code</label>
-							<input type="text" name="txtItemCode" id="itemcode" required="">
-							<label>Item Name</label>
-							<input type="text" name="txtItemName" id="itemname" readonly="">
-							<input type="textarea" name="txtItemDescription" placeholder="description" style="width: 350px;height: 40px;padding-left: 10px" id="itemdes" readonly="">				
-							<h5>Item Sizes</h5>
-															
-							<label>XS</label><input type="text" name="txtXS"  id="xs" class="size" value="0">
-							<label>S</label><input type="text" name="txtS"  id="smll"  class="size" value="0">
-							<label>M</label><input type="text" name="txtM"  id="medm"  class="size" value="0">
-							<label>L</label><input type="text" name="txtL"  id="lrg"  class="size" value="0">
-							<label>XL</label><input type="text" name="txtXL"  id="xlg"  class="size" value="0">
-							<label>XXL</label><input type="text" name="txtXXL"  id="xxlg"  class="size" value="0"><br>
-							<label>Total Quantity</label><input type="text" name="txtTotQty" class="total" id="tot"><label style="width: 40px;">Pcs</label><br>
-											
-							<button class="btn btn-basic" type="button" id="btnreset">Reset</button>
-							<button class="btn btn-info" type="button"  id="btnAddItem" disabled="">Add Item</button>	
-							
+							<label>Order ID</label>
+							<input type="number" name="txtOrderId" id="orderid" readonly="" >
+							<label>Order Date</label>
+							<input type="date" name="txtOrderDate" required="" id="orderdate">
+							<label>Last Order Due-Date</label>
+							<input type="text" name="txtLastDueOrder"><br>
+							<!-- <label>Last Sheduled Date</label>
+							<input type="text" name="txtLastDueShed"><br> -->
+							<label>Due Date</label>
+							<input type="Date" name="txtDueDate" required="" id="duedate"><br><br>
+							<label>Customer </label>
+							<input type="text" name="txtCusName" id="cusname" required="">
+							<!-- <label>Total No of Items</label><input type="text" name="txtno_of_items" style="width: 100px"> -->
+							<br>
 						</div>
-					</form>	
+					</form>
 				</div>	
-				<div class="col-md-12">
-					<!-- <img src="{{asset('images/frock.jpg')}}" style="height: 120px;width: 120px" name="image"> -->
-					<button class="btn btn-danger " type="button" >Cancel</button>
-					<button class="btn btn-success" type="submit" id="btnAddOrder" disabled="">Add Order</button>
-					<button class="btn btn-success" type="button" id="btnSave" disabled="">Save</button>
-				</div>	
+			</div>
+
+			<div class="col-md-12" style="margin-bottom: 5px; ">
+				<h5> Order Items</h5>
+				<form id="frmitemdetails">
+					<input type="hidden" name="_token" value="{{ csrf_token() }}">
+					<div class="form-group">
+						<input type="text" name="txtOrderId2" id="id" hidden="">
+						<label>Item Code</label>
+						<input type="text" name="txtItemCode" id="itemcode" required="">
+						<label>Item Name</label>
+						<input type="text" name="txtItemName" id="itemname" readonly="">
+						<input type="textarea" name="txtItemDescription" placeholder="description" style="width: 350px;height: 40px;padding-left: 10px" id="itemdes" readonly="">				
+						<h5>Item Sizes</h5>
+															
+						<label>XS</label><input type="text" name="txtXS"  id="xs" class="size" value="0">
+						<label>S</label><input type="text" name="txtS"  id="smll"  class="size" value="0">
+						<label>M</label><input type="text" name="txtM"  id="medm"  class="size" value="0">
+						<label>L</label><input type="text" name="txtL"  id="lrg"  class="size" value="0">
+						<label>XL</label><input type="text" name="txtXL"  id="xlg"  class="size" value="0">
+						<label>XXL</label><input type="text" name="txtXXL"  id="xxlg"  class="size" value="0"><br>
+						<label>Total Quantity</label><input type="text" name="txtTotQty" class="total" id="tot"><label style="width: 40px;">Pcs</label><br>
+											
+						<button class="btn btn-basic" type="button" id="btnreset">Reset</button>
+						<button class="btn btn-info" type="button"  id="btnAddItem" disabled="">Add Item</button>	
+							
+					</div>
+				</form>	
+			</div>	
+			<div class="col-md-12">
+				<!-- <img src="{{asset('images/frock.jpg')}}" style="height: 120px;width: 120px" name="image"> -->
+				<button class="btn btn-danger " type="button" >Cancel</button>
+				<button class="btn btn-success" type="submit" id="btnAddOrder" disabled="">Add Order</button>
+				<!-- <button class="btn btn-success" type="button" id="btnSave" disabled="">Save</button> -->
+			</div>	
+		</div>
+	</div>
+<!--End order details panel-->
+
+
+<!--Display Order details table panel-->
+	<div class="panel" style=" margin-bottom: 5px;border-style: none" id="sec2">
+		<h5>Ordered Item Details</h5>
+		<div class="panel-body" style="max-height: 200px; overflow-y: scroll" >
+			<div class="col-md-12" >
+			  	<div class="table-responsive">
+					<table class="table table-striped">
+						<thead style="table-layout: fixed;">
+							<tr>
+							    <th >Item Code</th>
+							    <th >Item Name</th>
+							    <th >XS</th>
+							    <th >S</th>
+							    <th >M</th>
+							    <th >L</th>
+							    <th >XL</th>
+							    <th >XXL</th>
+							    <th >Total Qty</th>
+							</tr>
+						</thead>
+						<tbody id="tbody">
+						
+						</tbody>
+					</table>
+			  	</div>
 			</div>
 		</div>
-		<!--End order details panel-->
-
-
-		<!--Order details table panel-->
-			<div class="panel" style=" margin-bottom: 5px;border-style: none" id="sec2">
-				<h5>Ordered Item Details</h5>
-				<div class="panel-body" style="max-height: 200px; overflow-y: scroll" >
-					<div class="col-md-12" >
-					  	<div class="table-responsive">
-					  		<table class="table table-striped">
-							    <thead style="table-layout: fixed;">
-							      <tr>
-							        <th >Item Code</th>
-							        <th >Item Name</th>
-							        <th >XS</th>
-							        <th >S</th>
-							        <th >M</th>
-							        <th >L</th>
-							        <th >XL</th>
-							        <th >XXL</th>
-							        <th >Total Qty</th>
-							      </tr>
-							    </thead>
-							    <tbody id="tbody">
-						
-
-
-							    </tbody>
-							</table>
-					  	</div>
-					</div>
-				</div>
-				<br>
-			</div>
-
-			
-		<!--End of order detail table panel-->
+		<br>
+	</div>
+<!--End of order detail table panel-->
 
 	<script type="text/javascript">
 
 		//get order id automatically
-		 $(document).ready(function(){
+		$(document).ready(function(){
         	getLastOrderId();
         	getSystemDate();
         });
 
 
-		 function getLastOrderId(){
+		function getLastOrderId(){
 		 	$.ajax({
         		url:'/getLastId',
 			 	method:'get',
@@ -134,7 +131,7 @@
         	});
 		 }
 
-		 function getSystemDate(){
+		function getSystemDate(){
 		 	$.ajax({
         		url:'/getsysdate',
 			 	method:'get',
@@ -163,12 +160,13 @@
 			}
 		}) 
 
-		 $('#itemcode').change(function(){
+		// show item details for selected item code
+		$('#itemcode').change(function(){
 		 	var item_code=$('#itemcode').val();
 		 	get_Item_Details(item_code);
 		 })
 
-		 function get_Item_Details(item_code=''){
+		function get_Item_Details(item_code=''){
 		 		$.ajax({
         		url:'/getItemDetails',
 			 	method:'get',
@@ -196,12 +194,13 @@
         	});
 		 }
 
-		 $('.size').change(function(){
+
+		$('.size').change(function(){
 		 	$('#btnAddItem').prop('disabled',false);
 		 });
 
-		 //calc total qty
-		 $(document).on("change", ".size", function() {
+		 //calc total item qty
+		$(document).on("change", ".size", function() {
    		 	var sum = 0;
    		 	$(".size").each(function(){
        	 		sum += +$(this).val();
@@ -213,9 +212,10 @@
 			resetForm();
 		})
 		 
-		 function resetForm(){
+		function resetForm(){
 		 	$('#frmitemdetails').trigger("reset");
 		 }
+
 
 		$('#btnAddItem').click(function(data){
 			var x=$('#itemcode').val();
@@ -241,24 +241,23 @@
 				alert('Select item to add..!');
 				$('#btnAddItem').prop('disabled',true);
 				resetForm();
-			}	
-				
-
-            	
+			}	    	
 		});
 		
 
 		$('#btnAddOrder').click(function(){
 			addOrder();
-			$('#btnSave').prop('disabled',false);
-			// addSizes();
-
-		});
-		$('#btnSave').click(function(){
+			// $('#btnSave').prop('disabled',false);
 			addSizes();
 
 		});
 
+		// $('#btnSave').click(function(){
+		// 	addSizes();
+
+		// });
+
+		//Add order details 
 		function addOrder(){
 			var id_order=$('#orderid').val();
 			var order_date=$('#orderdate').val();
@@ -278,8 +277,7 @@
 		    }
 		}
 		
-		
-
+		//Add order sizes
 		function addSizes(){
 			var id_order=$('#orderid').val();
 			var order_date=$('#orderdate').val();
@@ -288,53 +286,36 @@
 
 			if(order_date!='' && due_date!='' && due_date!='' &&cusname!=''){
 				$('#tbody').find('tr').each(function (i, el) {
-		        var Size_Table = new Array();
-		        var Size_TableData={ "itemId" : $(this).find('td:eq(0)').text(),
-		            				"itemName" : $(this).find('td:eq(1)').text(),
-		            				"size_xs" : $(this).find('td:eq(2)').text(),
-		            				"size_s" : $(this).find('td:eq(3)').text(),
-		            				"size_m" : $(this).find('td:eq(4)').text(),
-		            				"size_l" : $(this).find('td:eq(5)').text(),
-		            				"size_xl" : $(this).find('td:eq(6)').text(),
-		            				"size_xxl" : $(this).find('td:eq(7)').text(),
-		            				"totqty" : $(this).find('td:eq(8)').text()
-		            			};
-		        Size_Table.push(Size_TableData);
-		        // console.log(Size_Table);
+			        var Size_Table = new Array();
+			        var Size_TableData={ "itemId" : $(this).find('td:eq(0)').text(),
+			            				"itemName" : $(this).find('td:eq(1)').text(),
+			            				"size_xs" : $(this).find('td:eq(2)').text(),
+			            				"size_s" : $(this).find('td:eq(3)').text(),
+			            				"size_m" : $(this).find('td:eq(4)').text(),
+			            				"size_l" : $(this).find('td:eq(5)').text(),
+			            				"size_xl" : $(this).find('td:eq(6)').text(),
+			            				"size_xxl" : $(this).find('td:eq(7)').text(),
+			            				"totqty" : $(this).find('td:eq(8)').text()
+			            			};
+			        Size_Table.push(Size_TableData);
+			        // console.log(Size_Table);
 
-		        $.ajax({
-		            type: 'post',
-		            url: '/addorderedsizes',
-		            headers:{'X-CSRF-TOKEN': '{{ csrf_token() }}'},
-                    data: {'Size_Table':Size_Table,'id_order':id_order},
+			        $.ajax({
+			            type: 'post',
+			            url: '/addorderedsizes',
+			            headers:{'X-CSRF-TOKEN': '{{ csrf_token() }}'},
+	                    data: {'Size_Table':Size_Table,'id_order':id_order},
 
-		            success: function(response) {
-						alert(response.message);
-		            }
-		        });
-		    });
+			            success: function(response) {
+							alert(response.message);
+			            }
+			        });
+		    	});
 			}
 			else{
 				alert('	Incomplete Order details..!');
-			}
-
-			
+			}	
 		}
-
-		// function addOrder(){
-
-		//         $.ajax({
-		//             type: 'post',
-		//             url: '/addorder',
-		//             // headers:{'X-CSRF-TOKEN': '{{ csrf_token() }}'},
-  //                   data: $('#frmorder').serialize(),
-
-		//             success: function(response) {
-		// 				alert(response.message);
-		//             }
-		//         });
-		// }
-       
 
 	</script>
 

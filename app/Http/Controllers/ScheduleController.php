@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use Carbon\Carbon;
 
 class ScheduleController extends Controller
 {
@@ -78,7 +79,7 @@ class ScheduleController extends Controller
         $start_date=$request->input('txtSched_Start');
         $end_date=$request->input('txtSched_End');
             
-        $data=array('Schedule_Id'=>$id,'Order_Id'=>$orderid,'Start_Date'=>$start_date,'End_Date'=>$end_date);
+        $data=array('Schedule_Id'=>$id,'Order_Id'=>$orderid,'Start_Date'=>$start_date,'End_Date'=>$end_date,'Status'=>'created');
 
         DB::table('schedules')->insert($data);
         // echo "successfully added to shedule";
@@ -182,22 +183,38 @@ class ScheduleController extends Controller
         } 
     }
 
-    //view all schedules
-    public function ViewAllSchedules(){
-        $display="";
-        $shed_data=DB::table('schedules')->get();
-        foreach ($shed_data as $result) {
-            $display.='<tr>'.
-                    '<td>'.$result->Schedule_Id.'</td>'.
-                    '<td>'.$result->Order_Id.'</td>'.
-                    '<td>'.$result->Start_Date.'</td>'.
-                    '<td>'.$result->End_Date.'</td>'.
-                    '</tr>';
-                }
-        return Response($display);        
+     public function dashboardContent(){
+        $shed_data=DB::table('schedules')->where('Status','=','created')->count();
+        $allTasks=DB::table('daily_tasks')->where('Status','=','pending')->count();
+        $completedTasks=DB::table('daily_tasks')->where('Status','=','Completed')->count();
+        
+       $responseArr=array($shed_data,$allTasks,$completedTasks);
+       return response()->json(['data'=>$responseArr]); 
        
     }
 
+    public function getAttendanceSummary(){
+        $date_today=Carbon::today();    //get system date
+
+        $allEmpCount=DB::table('employee')->count();
+        $presentCount=DB::table('attendance')->where('Date','like','%'.$date_today.'%')->where('Status','=','present')->count();
+        $absentCount=($allEmpCount-$presentCount);
+
+        $return_Arr=array($allEmpCount,$presentCount,$absentCount);
+        return response()->json(['data'=>$return_Arr]);
+    }
+
+    public function getWorkSummary(){
+        $date_today=Carbon::today();        //get system date
+
+        $alltaskCount=DB::table('daily_tasks')->where('Date','like','%'.$date_today.'%')->count();
+        $allocatedtaskCount=DB::table('daily_tasks')->where('Date','like','%'.$date_today.'%')->where('Status','=','allocated')->count();
+        $completedtaskCount=DB::table('daily_tasks')->where('Date','like','%'.$date_today.'%')->where('Status','=','Completed')->count();
+        $dueOrders=DB::table('placed_orders')->where('Due_Date','like','%'.$date_today.'%')->count();
+
+        $return_Arr=array($allocatedtaskCount,$allocatedtaskCount,$completedtaskCount,$dueOrders);
+        return response()->json(['data'=>$return_Arr]);
+    }
    
 
     //search scheduled tasks details by id(view sched)
@@ -320,7 +337,7 @@ class ScheduleController extends Controller
     }
 
 
-    //search task
+    //search task 
     function viewAllocatedTask(Request $task){
         if($task->ajax()){
             $req=$task->get('searchid');
@@ -419,14 +436,6 @@ class ScheduleController extends Controller
         }
     }
 
-    //dispaly all tasks
-    public function showAllTasks(){
-        $allTasks=DB::table('daily_tasks')
-                    ->where('Status','=','allocated')
-                    ->get();
-        return response()->json(['data'=>$allTasks]);
-    }   
-
     public function showAlltasksByDate(Request $request){
         if($request->ajax()){
             $date_to_Search=$request->get('dateToSearch');
@@ -472,5 +481,19 @@ class ScheduleController extends Controller
         }
     }
 
+    public function changeScheduleState_Completed(Request $request){
+        if($request->ajax()){
+            $scheduleCompleted=$request->get('schedule_to_Update');
+            $schedule_state='completed';
 
+            if($scheduleCompleted!=''){
+                $updated_state=DB::table('schedules') 
+                    ->where('Schedule_Id', $scheduleCompleted) 
+                    ->limit(1) 
+                    ->update([ 'Status' => $schedule_state]);
+
+                return response()->json(['message'=>'Updated Successfully']);    
+            }
+        }
+    }
 }

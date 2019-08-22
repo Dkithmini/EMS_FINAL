@@ -21,7 +21,7 @@ class PageController extends Controller
 
 	//dashboard
 	public function getManagerDashboard(){
-		return view('dashboard/managerdash');
+		return view('dashboard/dashboardMain');
 	}
 
 
@@ -81,6 +81,6 @@ class PageController extends Controller
 
 	//reports
 	public function getReports(){
-		return view('reports/displayreports');
+		return view('reports/attendanceReports');
 	}	
 }

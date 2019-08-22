@@ -98,8 +98,8 @@
 				data:{'record':Table,'rec_date':rec_date},
 				// dataType:'json',
 				success:function(emp){
-					alert('attendance recorded successfully...!');
-					
+					// alert('attendance recorded successfully...!');
+					window.popWindow.dialog("Attendance Recorded Successfully...!","success");	
 				}	  	
 			});
 		}	
@@ -123,7 +123,8 @@
 					var result=JSON.parse(data_record);
 
 					if(!result.length){
-						alert('All Employees Marked!');
+						// alert('All Employees Marked!');
+						window.popWindow.dialog("Attendance Recording Completed for All Employees...!","success");
 						 var showdata='';
 						 document.getElementById("tbody").innerHTML=showdata;
 					}

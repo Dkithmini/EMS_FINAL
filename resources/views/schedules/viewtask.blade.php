@@ -101,7 +101,9 @@
                     var result=response.data;
                     // console.log(result);
                     if(!result.length){
-                        alert('Task Not Found..!');
+                        // alert('Task Not Found..!');
+                        window.popWindow.dialog("Selected Task Not Found..!","error");
+                        
                         $('#frmtaskdetails').trigger("reset");
                         $('#Emp_count').val('');
                     }   
