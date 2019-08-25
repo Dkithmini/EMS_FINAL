@@ -51,15 +51,16 @@
 		function viewAllEmp(){
 				$.ajax({
                 type: 'get',
-                url: 'attendance/viewallemp',
-	                success: function(data) {
+                url:  'viewallemp_forattendance',
+	                success: function(response) {
 	                	// var show=response;
 	                	// console.log(response);
+	                	var response_data=response.data;
 	                    var showdata='';	
 	                    var radioid=1;	
-						for (var a=0;a<data.length;a++) {
-						  	var Id=data[a].Emp_Id;	
-						  	var Name=data[a].Emp_Name;
+						for (var a=0;a<response_data.length;a++) {
+						  	var Id=response_data[a].Emp_Id;	
+						  	var Name=response_data[a].Emp_Name;
 						  	
 					  		showdata +="<tr>";
 					  		showdata +="<td>"+Id+"</td><td>"+Name+"</td><td><input type='radio' class='att' name="+radioid+" value='present'>Present<input type='radio' class='att' name="+radioid+" value='absent'>Absent<input type='radio' class='att' name="+radioid+" value='Unmarked'  checked='' hidden=''></td>";

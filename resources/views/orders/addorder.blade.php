@@ -87,6 +87,7 @@
 							    <th >XL</th>
 							    <th >XXL</th>
 							    <th >Total Qty</th>
+							    <th >Remove</th>
 							</tr>
 						</thead>
 						<tbody id="tbody">
@@ -136,10 +137,10 @@
         		url:'/getsysdate',
 			 	method:'get',
 			 	success:function(response){
-			 		// console.log(response);
-			 		var sysdata=response.data;
-			 		var today=sysdata.date;
-			 		$('#orderdate').val(today);
+			 		console.log(response);
+			 		// var sysdata=response.data;
+			 		// var today=sysdata.date;
+			 		// $('#orderdate').val(today);
 			 	}
         	});
 		 	
@@ -155,7 +156,7 @@
 			}
 			else{
 				alert('wrong due data..!');
-				
+				$('#duedate').val('');
 				
 			}
 		}) 
@@ -231,7 +232,7 @@
 				var tot=$("#tot").val();
 
 				//display ordered items and sizes
-				var markup = "<tr><td>"+ icode+"</td><td>" + iname + "</td><td>" + exsmall +"</td><td>"+ small + "</td><td>"+ med +"</td><td>"+ large +"</td><td>"+ xlarge+"</td><td>"+ xxl +"</td><td>"+tot+"</td></tr>";
+				var markup = "<tr><td>"+ icode+"</td><td>" + iname + "</td><td>" + exsmall +"</td><td>"+ small + "</td><td>"+ med +"</td><td>"+ large +"</td><td>"+ xlarge+"</td><td>"+ xxl +"</td><td>"+tot+"</td><td><button type='button' id='btntableselect' class='remove'><i class='fas fa-trash-alt'></i></td></tr>";
             	$('#tbody').append(markup);
             	$('#btnAddOrder').prop('disabled',false);
             	resetForm();
@@ -244,6 +245,10 @@
 			}	    	
 		});
 		
+		//remove a item from item table
+		$(document).on("click",'.remove',function(){
+			$(this).closest('tr').remove(); 
+		});
 
 		$('#btnAddOrder').click(function(){
 			addOrder();

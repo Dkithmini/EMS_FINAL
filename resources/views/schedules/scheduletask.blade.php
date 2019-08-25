@@ -90,9 +90,9 @@
                                 
                         </div>
                         <div class="col-md-4" style="max-height: 180px;">
-                            <label style="width: 200px;text-align: left;">Total Attended</label><input type="text" id="emp_attended" style="width: 80px;"><br>
-                            <label style="width: 200px;text-align: left;">Unallocated Employees</label><input type="text" id="emp_free" style="width: 80px;">
-                            <label style="width: 200px;text-align: left;">Count</label><input type="text" name="txtCountAllocated_SelectedTask" style="width: 80px;" id="allocatedCount">
+                            <label style="width: 200px;text-align: left;">Total Attended</label><input type="text" id="emp_attended" style="width: 80px;" readonly=""><br>
+                            <label style="width: 200px;text-align: left;">Unallocated Employees</label><input type="text" id="emp_free" style="width: 80px;" readonly="">
+                            <label style="width: 200px;text-align: left;">Count</label><input type="text" name="txtCountAllocated_SelectedTask" style="width: 80px;" id="allocatedCount" readonly="">
                             <br><br> 
             
                             <!-- <button class="btn btn-info" type="button" id="btnAllocate">Add</button> -->
@@ -158,16 +158,16 @@
 
         //get count of all employees present
         function getAllAttendedCount(task_date=''){
-                var date_toSearch
+                
                  $.ajax({
                     url:'/getAttendedCount',
                     method:'get',
-                    data:{'date_toSearch':date_toSearch},
+                    data:{'date_toSearch':task_date},
 
                     success:function(response){
                         var result=response.data;
-                        // console.log(result.length);
-                        $('#emp_attended').val(result.length);
+                        console.log(result.length);
+                        // $('#emp_attended').val(result.length);
                     }
                 });
             }

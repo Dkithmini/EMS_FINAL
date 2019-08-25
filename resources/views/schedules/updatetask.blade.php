@@ -58,11 +58,11 @@
 	<br>
 
 	<div class="col-md-12" id="summeryForm">
-		<label>Task Qty</label><input type="text" name="txtTot_TaskQty" id="tot_TaskQty">
-		<label>Completed</label><input type="text" name="txtTotCompleted" id="tot_Completed">
-		<label>Remainder</label><input type="text" name="txtRemainder" id="remainder">
-		<label>Extra</label><input type="text" name="txtExtra" id="extra">
-		<button type="button" id="btnrefresh" disabled="">Refresh</button>
+		<label>Task Qty</label><input type="text" name="txtTot_TaskQty" id="tot_TaskQty" readonly="">
+		<label>Completed</label><input type="text" name="txtTotCompleted" id="tot_Completed" readonly="">
+		<label>Remainder</label><input type="text" name="txtRemainder" id="remainder" readonly="">
+		<label>Extra</label><input type="text" name="txtExtra" id="extra" readonly="">
+		<button type="button" id="btnrefresh" disabled=""><i class="fas fa-sync-alt"></i></button>
 		<button type="button" id="btnupdatestatus" >Update</button>
 		<br><br>
 
@@ -104,7 +104,8 @@
 					
 					if(!result.length){				//if task not available/allocated
 						// alert('Task Pending....!');
-						window.popWindow.dialog("No Allocated Task Available For given Id..!","error");
+						window.popWindow.dialog("No Allocated Task Available For Given Id..!","error");
+						$('#taskid').val('');
 					}
 					else{
 						for(i=0;i<result.length;i++){

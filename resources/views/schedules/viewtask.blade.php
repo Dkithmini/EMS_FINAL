@@ -6,6 +6,19 @@
         <div class="panel-body" >
             <div class="col-md-12">
                 <div class="row">
+                    <div class="col-md-6">
+                        <h5>Task Details</h5>
+                        <form id="frmtaskdetails">
+                            <label>Task Id</label><input type="text" name="txtTaskid" id="taskid">
+                            <button id="searchtaskbyid" type="button" class="btn-basic">Search</button><br>
+                            <label>Date</label><input type="text" name="dtDate" id="Tdate" readonly=""><br>
+                            <label>Section</label><input type="text" name="txtSec" id="Tsec" readonly=""><br>
+                            <label>Time Slot</label><input type="text" name="txtTime" id="Tslot" readonly=""><br>
+                            <label>Item Code</label><input type="text" name="txtItem" id="Icode" readonly=""><br>
+                            <label>Qty</label><input type="number" name="txtQuantity" id="Tqty" readonly=""><br>
+                            <label>Status</label><input type="text" name="txtStatus" id="Tstatus" readonly=""><br>
+                        </form>
+                    </div>
 
                     <div class="col-md-6">
                         <h5>Task Summery</h5>
@@ -27,29 +40,6 @@
                             </tbody>
                         </table>
                     </div>
-
-                    <div class="col-md-6">
-                        <h5>Task Details</h5>
-                        <form id="frmtaskdetails">
-                            <label>Task Id</label><input type="text" name="txtTaskid" id="taskid">
-                            <button id="searchtaskbyid" type="button" class="btn-basic">Search</button><br>
-                            <label>Date</label><input type="text" name="dtDate" id="Tdate" readonly=""><br>
-                            <label>Section</label><input type="text" name="txtSec" id="Tsec" readonly=""><br>
-                            <label>Time Slot</label><input type="text" name="txtTime" id="Tslot" readonly=""><br>
-                            <label>Item Code</label><input type="text" name="txtItem" id="Icode" readonly=""><br>
-                            <label>Qty</label><input type="number" name="txtQuantity" id="Tqty" readonly=""><br>
-                            <label>Status</label><input type="text" name="txtStatus" id="Tstatus" readonly=""><br>
-                        </form>
-                    </div>
-
-                   <!--  <div class="col-md-5">
-                        <h5>Ordered Quantities</h5>
-                        <button type="button" id="btnshowsizes" class="btn-basic" disabled="">Show</button>
-                        <div id="task_sizes">
-                            
-                        </div>
-                    </div> -->
-
                 </div>  
             </div>
         </div>

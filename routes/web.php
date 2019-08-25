@@ -101,7 +101,8 @@ Route::post('/updateemployee','EmployeeController@updateEmployees');//update emp
 Route::get('attendance/recordattendance','PageController@getRecordAttendance');//load record attendance page
 Route::get('attendance/viewattendance','PageController@getViewAttendance');//load view attendance page
 
-Route::get('attendance/viewallemp','AttendanceController@viewEmpList');//display all emp list
+// Route::get('/viewallemp_forattendance','AttendanceController@viewEmpList_attendance');//display all emp list
+Route::get('/viewallemp_forattendance','AttendanceController@viewEmpList_attendance');
 Route::post('/recordattendance','AttendanceController@recordAttendance');//record attendance
 Route::get('/viewunmarked','AttendanceController@viewUnmarkedEmpList');//display unmarked emp list
 Route::get('/viewAttendance','AttendanceController@viewAttendance');//display all attendance

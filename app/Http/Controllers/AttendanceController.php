@@ -7,10 +7,10 @@ use DB;
 
 class AttendanceController extends Controller
 {
-    public function viewEmpList(){
+    public function viewEmpList_attendance(){
 		$data=array();
 		$data=DB::table('employee')->get();
-		return response($data);
+		return response()->json(['data'=>$data]);
 	}
 	
 

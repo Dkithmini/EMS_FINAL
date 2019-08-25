@@ -69,7 +69,7 @@
 
 					<div class="col-md-6">
 						<form id="frmLastSched">
-							<label>Tot Qty</label><input type="text" name="txttot" id="showTot"><br>
+							<label>Tot Qty</label><input type="text" name="txttot" id="showTot" readonly=""><br>
 							<label>Suggested Hrs: </label>
 							<label style="width: 50px;text-align: center;">C</label>
 							<input type="number" name="txtduration_Cutting" id="hrs_suggested_Cutting" readonly="" style="width: 50px;">
@@ -138,10 +138,10 @@
 					
 					<div class="col-md-6">
 						<div id="sec1">
-							<label>Item Total</label><input type="text" name="txtItemTotal" id="ItemTotal"><br>
-							<label>Cutting</label><input type="text" id="Cutting_summery" ><br>
-							<label>Sewing</label><input type="text"  id="Sewing_summery"><br>
-							<label>Finishing</label><input type="text"  id="Finishing_summery"><br>
+							<label>Item Total</label><input type="text" name="txtItemTotal" id="ItemTotal" readonly=""><br>
+							<label>Cutting</label><input type="text" id="Cutting_summery" readonly=""><br>
+							<label>Sewing</label><input type="text"  id="Sewing_summery" readonly=""><br>
+							<label>Finishing</label><input type="text"  id="Finishing_summery" readonly=""><br>
 							<button id="btnrefresh"><i class="fas fa-sync-alt"></i></button>
 						</div>
 					</div>
@@ -401,8 +401,9 @@
 
 		 	if(date_end>date_due || date_end<date_start){
 		 		alert('Invalid End date..!');
-		 	
-		 	}else{
+		 		$('#shed_end').val('');
+		 	}
+		 	else{
 		 		$('#btnaddshedule').prop('disabled',false);
 		 	}
 		});
