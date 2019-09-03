@@ -2,6 +2,8 @@
 
 @section('show_content')
 <link rel="stylesheet" type="text/css" href="{{ asset('css/mycss/viewtask.css') }}">
+   
+<!--  Task details panel -->
    <div class="panel">
         <div class="panel-body" >
             <div class="col-md-12">
@@ -25,7 +27,8 @@
                         <label>Date</label><input type="date" name="txtSearchTaskByDate" id="SearchTaskByDate">
                         <button type="button" id="btnsearchTaskSummery">Search</button>
                         <br><br>
-                        <table class="table table-striped table-responsive" style="max-height: 150px;">
+
+                            <table class="table table-striped table-responsive" style="max-height: 150px;">
                             <thead>
                                 <tr>
                                     <td>Schedule Id</td>
@@ -39,17 +42,22 @@
                                         
                             </tbody>
                         </table>
+                       
+                        
                     </div>
                 </div>  
             </div>
         </div>
     </div>
+<!-- End of task details panel -->
 
+<!-- Allocated emp summary table panel -->
     <div class="panel">
         <div class="panel-body">
             <div class="col-md-12">
                 <h5>Employee Allocation</h5>
                 <br>
+                <div id="tbldiv">
                 <table class="table  table-condensed">
                     <thead>
                         <tr>
@@ -63,11 +71,13 @@
                                 
                     </tbody>
                 </table>
+                </div>
+                
                 <label>No Of Employees</label><input type="text" name="txtempcount" id="Emp_count" readonly="">
             </div>
         </div>
     </div>
-
+<!-- End of Allocated emp summary table panel -->
 
     <script type="text/javascript">
         //search task
@@ -82,7 +92,7 @@
         //display search task results
         function searchTask(searchid=''){
             $.ajax({
-                url:'/searchtask',
+                url:'/searchtask_byId',
                 type:'get',
                 data:{'searchid':searchid},
                     // datatype:'json',
@@ -98,23 +108,22 @@
                         $('#Emp_count').val('');
                     }   
                     else{
-                        for(i=0;i<result.length;i++){
-                            // var sid=result[i].Schedule_Id;
-                            var task_Id=result[i].Task_Id;
-                            var date=result[i].Date;
-                            var itemcode=result[i].Item_Code;
-                            var section=result[i].Section;
-                            var time=result[i].Time_Slot;
-                            var qty=result[i].Qty;
-                            var status=result[i].Status;      
 
-                            $('#Tdate').val(date);
-                            $('#Tsec').val(section);
-                            $('#Tslot').val(time);
-                            $('#Icode').val(itemcode);
-                            $('#Tqty').val(qty);
-                            $('#Tstatus').val(status);
-                        }
+                        var task_Id=result[0].Task_Id;
+                        var date=result[0].Date;
+                        var itemcode=result[0].Item_Code;
+                        var section=result[0].Section;
+                        var time=result[0].Time_Slot;
+                        var qty=result[0].Qty;
+                        var status=result[0].Status;      
+
+                        $('#Tdate').val(date);
+                        $('#Tsec').val(section);
+                        $('#Tslot').val(time);
+                        $('#Icode').val(itemcode);
+                        $('#Tqty').val(qty);
+                        $('#Tstatus').val(status);
+
                     }       
                     
                 }       
@@ -127,7 +136,7 @@
                 url:'/showtaskemp',
                 type:'get',
                 data:{'searchid':searchid},
-                    // datatype:'json',
+                
                 success:function(data){
                     var showdata='';
                     // console.log(data);
@@ -136,8 +145,11 @@
                     
                     if(!result.length){
                             document.getElementById("tbody1").innerHTML=showdata;
+                            $('#tbldiv').hide();
+                            $('#Emp_count').val('');
                     }
                     else{
+                        $('#tbldiv').show();
                         for(i=0;i<result.length;i++){
                         // var sid=result[i].Schedule_Id;
                         var emp_Id=result[i].Emp_Id;
@@ -162,69 +174,40 @@
         $('#btnsearchTaskSummery').click(function(){
             var dateToSearch=$('#SearchTaskByDate').val();
             searchTaskSummery(dateToSearch);
-        })
+        });
+
+        // search task summary
         function searchTaskSummery(dateToSearch=''){
             
             $.ajax({
                 url:'/getTasksBydate',
-                    headers:{'X-CSRF-TOKEN': '{{ csrf_token() }}'},
-                    method:'get',
-                    data:{'dateToSearch':dateToSearch},
+                headers:{'X-CSRF-TOKEN': '{{ csrf_token() }}'},
+                method:'get',
+                data:{'dateToSearch':dateToSearch},
                     
-                    success:function(response){
-                        // console.log(response.data);
-                        var showtasks='';
+                success:function(response){
+                    // console.log(response.data);
+                    var showtasks='';
                     
-                        var result=response.data;
+                    var result=response.data;
                     // console.log(result);
                               
-                        for(i=0;i<result.length;i++){
-                            var sid=result[i].Schedule_Id;
-                            var task_Id=result[i].Task_Id;
-                            var sec=result[i].Section;
-                            var tslot=result[i].Time_Slot;
-                            var task_status=result[i].Status;     
+                    for(i=0;i<result.length;i++){
+                        var sid=result[i].Schedule_Id;
+                        var task_Id=result[i].Task_Id;
+                        var sec=result[i].Section;
+                        var tslot=result[i].Time_Slot;
+                        var task_status=result[i].Status;     
 
-                            showtasks +="<tr>";
-                            showtasks +="<td>"+sid+"</td><td>"+task_Id+"</td><td>"+sec+"</td><td>"+tslot+"</td><td>"+task_status+"</td>";
-                            showtasks +="</tr>";
-                            document.getElementById("tbody1").innerHTML=showtasks;
-                        }
-                        
+                        showtasks +="<tr>";
+                        showtasks +="<td>"+sid+"</td><td>"+task_Id+"</td><td>"+sec+"</td><td>"+tslot+"</td><td>"+task_status+"</td>";
+                        showtasks +="</tr>";
+                        document.getElementById("tbody1").innerHTML=showtasks;
                     }
+                        
+                }
             });
         }
-
-        // $('#btnshowsizes').click(function(){
-        //     var searchid_task_sizes=$('#taskid').val();
-        //     displayTaskSizes(searchid_task_sizes);
-        // })
-
-        // function displayTaskSizes(searchid_task_sizes=''){
-        //     $.ajax({
-        //         url:'/getitemsizes',
-        //         method:'get',
-        //         data:{'searchid_task_sizes':searchid_task_sizes},
-        //         // dataType:'json',
-        //         success:function(itemsizes){
-        //             var show_size='';
-        //             // console.log(itemsizes);
-
-        //             var size_details=JSON.parse(itemsizes);
-        //             for(i=0;i<size_details.length;i++){
-        //                     var icode=size_details[i].Item_Code;
-        //                     var size_name=size_details[i].Size;
-        //                     var quantity=size_details[i].Qty;
-                            
-                            
-        //                         show_size +="<label>"+size_name+"</label><input value="+quantity+"></input><br>";
-        //                         document.getElementById("task_sizes").innerHTML=show_size;
-                            
-        //                 }
-        //         }
-        //      });
-        // }
-
         
     </script>
  

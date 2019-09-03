@@ -80,7 +80,11 @@ class PageController extends Controller
 
 
 	//reports
-	public function getReports(){
+	public function getReportsAttendance(){
 		return view('reports/attendanceReports');
+	}	
+
+	public function getReportsOrders(){
+		return view('reports/ordersReports');
 	}	
 }

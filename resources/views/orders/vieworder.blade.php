@@ -45,31 +45,6 @@
 	</div>
 <!--End all orders panel-->
 
-<!--Order details panel-->
-	<div class="panel" >
-		<h5>Order Details</h5>
-		<input type="text" name="txtid" hidden="">
-		<div class="panel-body" >
-			<div class="row">
-				<div class="col-md-12">
-					<table class="table table-condensed">
-						<thead>
-						    <tr>
-						    	<th >Item Code</th>
-						    	<th >Quantity</th>
-						  	</tr>
-						</thead>
-						<tbody id="tbody2">
-						
-						</tbody>
-					</table>
-					<br>
-				</div>
-			</div>
-		</div>
-	</div>
-<!--End order details panel-->
-
 <!--Order item sizes panel-->
 	<div class="panel" >
 		<h5>Item Sizes</h5>
@@ -86,7 +61,7 @@
 						  	</tr>
 						</thead>
 						<tbody id="tbody3">
-						
+							<!-- table content -->
 						</tbody>
 					</table>
 					<br>
@@ -101,7 +76,6 @@
     		$("#SearchOrderById").click(function() {
     			var searchid=$('#SearchId').val();
     			SearchById(searchid);
-    			// DisplayOrderItems(searchid);	
     			DisplayOrderSizes(searchid);
     		});
     	});
@@ -145,44 +119,13 @@
 			});
 		}
 
-		//Display order details
-		// function DisplayOrderItems(searchid='') {
-		// 	$.ajax({
-		// 	 	url:'/displaydetails',
-		// 	 	method:'get',
-		// 	 	data:{'search_id':searchid},
-		// 	 	// dataType:'json',
-		// 	 	success:function(response){
-		// 	 		var show_order_details='';
-		// 			var items=response.data;
-		// 	 		console.log(response.data);
-
-		// 	 		for(i=0;i<items.length;i++){
-		// 		 			var item_code=items[i].Item_Code;
-		// 		 			var tot_qty=items[i].Total_Qty;
-				 			
-		// 		 			show_order_details +="<tr>";
-		// 					show_order_details +="</td><td>"+item_code+"</td><td>"+tot_qty+"</td>";
-		// 					show_order_details +="</tr>";
-
-		// 				// // 		$('#viewordericode').val(item_code);
-		// 				// // 		$('#viewitem').val(item);
-		// 				// // 		$('#viewdescription').val(item_description);
-		// 				// // 		$('#viewtotqty').val(tot_qty);
-								
-		// 					document.getElementById("tbody2").innerHTML=show_order_details;
-		// 		 	}
-		// 	 	}
-		// 	});
-		// }
-
 		//Display order sizes
 		function DisplayOrderSizes(searchid=''){
 			$.ajax({
 			 	url:'/displaysizes',
 			 	method:'get',
 			 	data:{'search_size':searchid},
-			 	// dataType:'json',
+			 	
 			 	success:function(sizeqty){
 			 		var show_size='';
 			 		// console.log(sizeqty);

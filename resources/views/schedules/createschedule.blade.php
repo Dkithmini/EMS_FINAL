@@ -1,6 +1,7 @@
 @extends('ManagerHome')
 
 @section('show_content')
+
 <!-- order select result panel-->
 <link rel="stylesheet" type="text/css" href="{{ asset('css/mycss/addschedule.css') }}">
 	<div class="panel">
@@ -17,9 +18,10 @@
 							<input type="text" name="searchOrderId" id="searchorder" >
 							<button type="button" id="search">Serach</button><br>
 							<label >Order Date</label>
-							<input type="Date" name="txtOrderDate" readonly="" id="orderdate"><br>
+							<input type="Date" name="txtOrderDate" readonly="" id="orderdate">
 							<label>Due Date</label>
-							<input type="Date" name="txtDueDate" readonly="" id="duedate">
+							<input type="Date" name="txtDueDate" readonly="" id="duedate"><br>
+							<label>Quantity</label><input type="text" name="txttot" id="showTot" readonly=""><br>
 						</div>
 					</form>	
 				</div>
@@ -43,40 +45,43 @@
 		</div>	
 	</div>
 <!-- end select order details panel-->
-
+	
 <!-- schedule details panel -->
 	<div class="panel">
-		<div class="panel-body" style="max-height: 300px;margin-top: 10px">
-			<div class="col-md-12">
+		<div class="panel-body" style="max-height: 300px;margin-top: 2px">
+			<div class="col-md-12" >
 				<div class="row">
-					<div class="col-md-6">
+					<div class="col-md-3">
 						<h5>Schedule Details</h5>
 						<form id="frmshed">
 							<input type="hidden" name="_token" value="{{ csrf_token() }}">
 							<input type="text" name="id2" id="idshed" hidden="">
 							<label>Schedule Id</label>
-							<input type="text" name="txtSchedId" id="sheduleid" readonly=""><br>
+							<input type="text" name="txtSchedId" id="sheduleid" readonly="">
 							<label>Start Date</label>
 							<input type="Date" name="txtSched_Start" id="shed_start">
 							<label>End Date</label>
 							<input type="Date" name="txtSched_End" id="shed_end">
-							<!-- <label>Days</label>
-							<input type="text" name="txtSched_Days"> -->
 							<br>
-							<button type="button" id="btnaddshedule" class="btn btn-success" disabled="">Add</button>
+							<button type="button" id="btnaddshedule" class="btn btn-success" disabled="">Create</button>
 						</form>
 					</div>
 
-					<div class="col-md-6">
+					<div class="col-md-4">
+						<div id='calendar' style="width:80%;height: 80%;padding-top: 0px;" ></div>
+					</div>
+
+					<div class="col-md-5">
 						<form id="frmLastSched">
-							<label>Tot Qty</label><input type="text" name="txttot" id="showTot" readonly=""><br>
-							<label>Suggested Hrs: </label>
-							<label style="width: 50px;text-align: center;">C</label>
-							<input type="number" name="txtduration_Cutting" id="hrs_suggested_Cutting" readonly="" style="width: 50px;">
-							<label style="width: 50px;text-align: center">S</label>
-							<input type="number" name="txtduration_Sewing" id="hrs_suggested_Sewing" readonly="" style="width: 50px;">
-							<label style="width: 50px;text-align: center">F</label>
-							<input type="number" name="txtduration_Finishing" id="hrs_suggested_Finishing" readonly="" style="width: 50px;"><br>
+							<label>Suggested Hrs: </label><br>
+							<div id="sugested_summary">
+								<label>Cutting</label>
+								<input type="number" name="txtduration_Cutting" id="hrs_suggested_Cutting" readonly=""><label style="padding-left: 1px;width: 30px;">hrs.</label>
+								<label>Sewing</label>
+								<input type="number" name="txtduration_Sewing" id="hrs_suggested_Sewing" readonly=""><label style="padding-left: 1px;width: 30px;">hrs.</label>
+								<label>Finishing</label>
+								<input type="number" name="txtduration_Finishing" id="hrs_suggested_Finishing" readonly=""><label style="padding-left: 1px;width: 30px;">hrs.</label>
+							</div>
 							<label>Last Sheduled Date</label>
 							<input type="text" name="txtLastDueShed" readonly="" id="LastDueShed"><br>
 							<label>Time Slot</label>
@@ -96,13 +101,13 @@
 
 			<div class="col-md-12">
 				<div class="row">
-					<div class="col-md-6">
+					<div class="col-md-7">
 						<h5>Add Task</h5>
 						<form id="frmaddtask" style="">
 						  	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						  	<div class="form-group">
 								<input type="text" name="s_id" id="sid" hidden="">
-								<label>Task Id</label><input type="text" name="txtTaskId" id="taskid" readonly=""><br>
+								<label>Task Id</label><input type="text" name="txtTaskId" id="taskid" readonly="">
 								<label>Date</label><input type="Date" name="dateTask" id="datetask"><br>
 								<label>Item Code</label>
 									<select name="Itemselect" id="itemselect">
@@ -124,25 +129,24 @@
 										<option value="morning2">10.00-12.00</option>
 										<option value="evening1">1.00-3.00</option>
 										<option value="evening2">3.00-5.00</option>
-									</select><br>
+									</select>
 								<label>Quantity</label><input type="text" name="taskQty" id="quantity"><br>
 							</div>
 											
-							<div class="form-group" style="float: right;">
+							<div class="btn-group float-right">
 								<button type="button" class="btn btn-danger" id="btnaddtaskcancel">Cancel</button>
 					            <button type="button" class="btn btn-info" id="btnaddtask" disabled="">Add Task</button>
 					        </div>
 						</form>
-						<br>	
 					</div>
 					
-					<div class="col-md-6">
+					<div class="col-md-5" style="margin-top: 5px;">
 						<div id="sec1">
 							<label>Item Total</label><input type="text" name="txtItemTotal" id="ItemTotal" readonly=""><br>
 							<label>Cutting</label><input type="text" id="Cutting_summery" readonly=""><br>
 							<label>Sewing</label><input type="text"  id="Sewing_summery" readonly=""><br>
 							<label>Finishing</label><input type="text"  id="Finishing_summery" readonly=""><br>
-							<button id="btnrefresh"><i class="fas fa-sync-alt"></i></button>
+							<button id="btnrefresh" style="float: right;"><i class="fas fa-sync-alt"></i></button>
 						</div>
 					</div>
 				
@@ -176,7 +180,7 @@
 		
 	
 	<script type="text/javascript">
-		//on loading page show order,task and shed ids
+		// on loading page show order,task and shed ids
 		$(document).ready(function(){
 			$('#Cutting_summery').val('');
 			$('#Sewing_summery').val('');
@@ -184,6 +188,7 @@
 
 			getLastShedId();
 			getLastTaskId();
+			updateCalendar();
 		});
 		
 		//on click select btn (search order details by id)		
@@ -206,7 +211,7 @@
 					var result=response.data;	
 					var check=response.value;
 
-					if(check===2){	//available unshecheduled order
+					if(check===2){		//available unshecheduled order
 						$('#frmshed').show();
 						$('#frmLastSched').show();
 						$('#frmaddtask').show();
@@ -224,7 +229,7 @@
 				 		}	
 					}
 
-					if(check===3){	//order not available
+					if(check===3){		//order not available
 						// alert(response.message);
 						var message_alert=response.message;
 						window.popWindow.dialog(message_alert,"error");
@@ -238,7 +243,7 @@
 
 					}
 
-			 		if(check===1)	//already scheduled order
+			 		if(check===1)		//already scheduled order
 			 		{
 			 			// alert(response.message);
 			 			var message_alert=response.message;
@@ -252,7 +257,7 @@
 			 			$('#tbldiv').hide();
 			 		}
 
-			 		if(check===4)//response error
+			 		if(check===4)		//response error
 			 		{
 			 			// alert(response.message);
 			 			var message_alert=response.message;
@@ -380,12 +385,12 @@
 	    //check the validity of sched start & end dates
 		$('#shed_start').change(function(){
 		 	var date_order=$('#orderdate').val();
-		 	var date_start=$('#shed_start').val();
 		 	var date_due=$('#duedate').val();
+		 	var date_start=$('#shed_start').val();
 		 	
 		 	if(date_start<date_order || date_start>date_due){	
 		 		alert('Invalid Start date..!');
-		 		
+		 		$('#shed_start').val('');
 		 	}
 		 	else{
 		 		console.log('valid date');
@@ -431,8 +436,6 @@
 				}
 			});
 		});
-
-		
 
 		//get task id automatically
 		function getLastTaskId(){
@@ -637,6 +640,56 @@
 				});
 			}
 		
+
+		function updateCalendar(){
+			$.ajax({
+				url:'/getCalendarData',
+				method:'get',
+				data: {},
+
+				success:function(response){
+				 	var tasks=response.data;
+					var start_date;
+					var title;
+					var end_date;
+					var events=new Array();
+					
+					for(i=0;i<tasks.length;i++){
+						start_date=tasks[i].Date;
+						title=tasks[i].Section;
+						end_date=tasks[i].End_Date;
+						// console.log(title);
+
+						// event = new Object();       
+					 //    event.title = title; // this should be string
+					 //    event.start = start_date; // this should be date object
+					 //    event.end = end_date; // this should be date object
+					 //    event.color = "blue";
+					 //    // event.allDay = false;
+					 //    // this.label1.setCaption(start_date);
+					 //    //EventArray.push(EventEntry);
+					 //    // console.log(events['title']);
+					 //    events.push(event);
+						
+						$('#calendar').fullCalendar({
+            			// put your options and callbacks here
+          	
+				            events : [
+				                {
+				                    title: title,
+				        			start: start_date,
+				        			end: end_date,
+				      				color: 'tomato'
+				                },
+				            ]
+			        	});
+					}
+
+					// $('#calendar').fullCalendar('addEventSource',events);
+				}
+			
+			});	
+		}
 	</script>
 
 @endsection

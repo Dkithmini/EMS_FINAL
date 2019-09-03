@@ -2,6 +2,8 @@
 
 @section('show_content')
 <link rel="stylesheet" type="text/css" href="{{ asset('css/mycss/updatetask.css') }}">
+	
+<!-- Seaechb task by id panel -->
 	<div class="panel">
 		<div class="panel-body">
 			<div class="col-md-12">
@@ -15,7 +17,9 @@
 			</div>
 		</div>
 	</div>
+<!-- End of search task panel -->
 
+<!-- display task details panel -->
 	<div class="panel">
 		<div class="panel-body">
 			<div class="col-md-12">
@@ -56,7 +60,9 @@
 		</div>
 	</div>
 	<br>
+<!-- end of display task panel -->
 
+<!-- Update task panel -->
 	<div class="col-md-12" id="summeryForm">
 		<label>Task Qty</label><input type="text" name="txtTot_TaskQty" id="tot_TaskQty" readonly="">
 		<label>Completed</label><input type="text" name="txtTotCompleted" id="tot_Completed" readonly="">
@@ -71,7 +77,7 @@
 			<div class="progress-bar bg-info " role="progressbar" aria-valuemax="100" id="taskprogressbar"><span class="caption"></span></div>
 		</div>
 	</div>
-
+<!-- End of update task panel -->
 	
 
 	<script type="text/javascript">
@@ -84,9 +90,6 @@
 
 			$('#btnrefresh').prop('disabled',false);
 			$('#btnrefresh').trigger('click');
-
-			// $('#taskprogressbar').width('0%').attr('aria-valuenow','0%');
-			// $("#taskprogressbar").children('span.caption').html('0%');	
 		});
 
 		//display allocated emps and targets

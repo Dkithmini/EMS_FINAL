@@ -14,16 +14,38 @@ class Admin
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next){
-         if (Auth::check() && Auth::user()->role == 'admin') {
-        return $next($request);
+    public function handle($request, Closure $next)
+    {
+        if (Auth::check() && Auth::user()->role == 'admin') {
+            return $next($request);
+        }
+   
+        return redirect('/admin');
+
     }
-    elseif (Auth::check() && Auth::user()->role == 'supervisor') {
-        return redirect('/supervisor');
+
+    public function handle($request, Closure $next)
+    {
+
+        if ( Auth::check() && Auth::user()->role == 'supervisor' )
+        {
+            return $next($request);
+        }
+
+    return redirect('/supervisor');
+
     }
-    else {
-        return redirect('/manager');
-    }
+
+    public function handle($request, Closure $next)
+    {
+
+        if ( Auth::check() && Auth::user()->role == 'manager' )
+        {
+            return $next($request);
+        }
+
+    return redirect('/manager');
+
     }
     
 }

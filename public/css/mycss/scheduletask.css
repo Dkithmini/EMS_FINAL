@@ -5,7 +5,7 @@
 
 label{
 	width: 155px;
-	padding-left: 35px;
+	padding-left: 5px;
 	text-align: left;
 	font-weight: normal;
 }
@@ -32,9 +32,6 @@ tbody{
 	/*background-color: #839E9F;*/
 	width: 100px;
 	padding-left: 15px;
-}
-tbody{
-	background-color: #FFFFFF;
 }
 
 h5{

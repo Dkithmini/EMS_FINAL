@@ -3,6 +3,7 @@
 @section('show_content')
 <link rel="stylesheet" type="text/css" href="{{ asset('css/mycss/viewschedule.css') }}">
 
+<!-- search schedule panel -->
 	<div class="panel">
 		<div class="panel-body" >
 			<div class="col-md-12">
@@ -49,16 +50,18 @@
 			</div>
 		</div>
 	</div>
+<!-- End of serch panel -->
 
+<!-- shedule summary panel -->
 	<div class="panel">
 		<div class="panel-body">
 			<div>
-				<label>Scheduled Tasks</label><input type="text" name="txtTotal_scheduled" id="totalScheduled">
-				<label>Processing Tasks</label><input type="text" name="txtAllocated" id="totalallocated">
-				<label>Pending Tasks</label><input type="text" name="txtPending" id="totalpending">
-				<label>Completed Tasks</label><input type="text" name="txtCompleted" id="totalcompleted"><br>
-				<button type="button" id="btnRefresh" disabled="">Refresh</button>
-				<button type="button" id="btnupdatestatus">Update</button><br>
+				<label>Scheduled Tasks</label><input type="text" name="txtTotal_scheduled" id="totalScheduled" readonly="">
+				<label>Processing Tasks</label><input type="text" name="txtAllocated" id="totalallocated" readonly="">
+				<label>Pending Tasks</label><input type="text" name="txtPending" id="totalpending" readonly="">
+				<label>Completed Tasks</label><input type="text" name="txtCompleted" id="totalcompleted" readonly=""><br>
+				<button type="button" id="btnRefresh" disabled="" class="btn btn-success">Refresh</button>
+				<button type="button" id="btnupdatestatus" class="btn btn-info">Update</button><br>
 			</div>
 			<br>
 			<h5>Schedule Progress</h5>
@@ -68,7 +71,7 @@
 			</div>
 		</div>
 	</div>
-
+<!-- End of schedule summary -->
 
 	<script type="text/javascript">
 
@@ -129,7 +132,7 @@
 			 	url:'/searchsched',
 			 	method:'get',
 			 	data:{'searchid':searchid},
-			 	//dataType:'json',
+			 	
 			 	success:function(response){
 			 		// console.log(data);
 			 		var result=response.data;

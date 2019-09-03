@@ -2,6 +2,8 @@
 
 @section('show_content')
 <link rel="stylesheet" type="text/css" href="{{ asset('css/mycss/scheduletask.css') }}">
+    
+<!-- select task panel -->
     <div class="panel">
         <div class="panel-body">
             <h5>Task Details</h5>
@@ -36,6 +38,9 @@
         </div>
     </div>
 
+<!-- End of select task panel -->
+
+<!-- Employee allocation panel -->
     <div class="panel">
         <div class="panel-body">
             <div class="row">
@@ -94,8 +99,7 @@
                             <label style="width: 200px;text-align: left;">Unallocated Employees</label><input type="text" id="emp_free" style="width: 80px;" readonly="">
                             <label style="width: 200px;text-align: left;">Count</label><input type="text" name="txtCountAllocated_SelectedTask" style="width: 80px;" id="allocatedCount" readonly="">
                             <br><br> 
-            
-                            <!-- <button class="btn btn-info" type="button" id="btnAllocate">Add</button> -->
+        
                             <button class="btn btn-info" type="button" id="btnfinish" disabled="">Finish</button>
                         </div>
                     </div>
@@ -105,10 +109,9 @@
         </div>
     </div>
 
-
+<!-- End of task allocation panel -->
 
     <script type="text/javascript">
-        
         //search schedule
         $('#btntaskallocation_search').click(function(){
             var task_date=$('#sched_date').val();
@@ -167,11 +170,9 @@
                     success:function(response){
                         var result=response.data;
                         console.log(result.length);
-                        // $('#emp_attended').val(result.length);
                     }
                 });
             }
-
 
         //select task to allocate employees
         $(document).on("click", ".btn-success", function(){
@@ -222,20 +223,16 @@
 
                     for(i=0;i<result_emp.length;i++){
                         var show_id=result_emp[i];
-                        count=i;
-                        // appnd=$('<li class="list-group-item">&emsp;<label for="' + show + '"></label>&emsp;'+'<input class="checkid" type="checkbox" name="' + show + '" id="' + show + '" value="'+show+'"></li>');
-                        //  appnd.find('label').text(show);
-                        // $('#selectemp').append(appnd);
-                        
+                        count=i;    
                         appnd +="<tr>";
-                        appnd +="<td>"+show_id+"</td><td><button class='selectEmployee'><i class='far fa-plus-square'></i></button><button><i class='fas fa-trash-alt'></i></button></td>";
+                        appnd +="<td>"+show_id+"</td><td><button class='selectEmployee'><i class='far fa-plus-square'></i></button></td>";
                         appnd +="</tr>";
                         document.getElementById("empList").innerHTML=appnd;
 
                     }
+
                     $('#emp_free').val(count+1);
-                                
-                    console.log(result);
+                        // console.log(result);
                 }       
             });
         }
@@ -277,23 +274,9 @@
 
             $('#no_of_emp').val(suggested_Emp_Count+'  emps.' );   //display suggested employee count
         }
-
-        //remove newly allocated emps from checkbox list
-        // $("#btnallocate_emp").click(function(event){
-        //     event.preventDefault();
-        //     var IDs = $(".checkid:checked").map(function(){
-        //     return $(this).val();
-        //     }).toArray();
-        //     console.log(IDs);
-        //     $(".checkid:checked").remove();
-
-
-        // });
-
-        
-        
+ 
         //allocate selected employee for task
-       $(document).on("click", ".selectEmployee", function(){
+        $(document).on("click", ".selectEmployee", function(){
            var $row = $(this).closest("tr"),       // Finds the closest row <tr> 
             $tds = $row.find("td"); 
             var empid_toAllocate=($($tds[0]).text());  //get the value of id column
@@ -314,7 +297,6 @@
                     
                     var result=response.data;
                     // console.log(result);
-
                     var showdata='';
 
 
@@ -338,59 +320,11 @@
 
         //change status of task  after emp allocation completed
         $('#btnfinish').click(function(){
-            // var taskid=$('#tid').val();
-            // $.ajax({
-            //     url:'/changetaskstatus',
-            //     type:'post',
-            //     headers:{'X-CSRF-TOKEN': '{{ csrf_token() }}'},
-            //     data:{'taskid':taskid},
-                
-            //     success:function(response){
-            //         alert('Employees Allocation Completed..!');
-                    
-            //         $('#frmemp_allocation').trigger("reset"); 
-            //         $("#empList").empty();
-            //         $("#tbody2").empty();
-            //         $('#allocatedCount').val('');
-            //     }       
-            // });
-
             $('#frmemp_allocation').trigger("reset"); 
             $("#empList").empty();
             $("#tbody2").empty();
             $('#allocatedCount').val('');
         })
-
-        // function getItemCodes(taskid=''){
-        //     $.ajax({
-        //         url:'/get_item_code',
-        //         method:'get',
-        //         data:{'taskid':taskid},
-        //         success:function(response){
-        //             var result=response.data;
-        //             console.log(result);
-
-        //             $('#items').html($('<option>', {
-        //                     value: '',
-        //                     text: '--Item--'
-        //                 }));
-
-        //             for(i=0;i<result.length;i++){
-        //                 var show=result[i].Item_Code;
-        //                  $('#items').append($('<option>', {
-        //                     value: show,
-        //                     text: show
-        //                 }));
-                      
-                        
-        //             } 
-        //         }
-        //     });
-        // }
-
-        // $('#items').change(function(){
-        //     showQtyItem_Ordered();
-        // });
 
         $('#emps_count').change(function(){
             var No_of_selected_emp=$('#emps_count').val();
@@ -404,31 +338,7 @@
                 var amount=Math.round(totQty/No_of_selected_emp);
                 $('#emp_targetQty').val(amount);
             }
-           
- 
         });
-
-
-        // function showQtyItem_Ordered(){
-        //      var sched_Id=$('#shed').val();
-        //      var section_chosen=$('#section_name').val();
-        //      var item_chosen=$('#items').val();
-        //      var reduce_qty=$('#selected_qty').val();
-
-        //      $.ajax({
-        //         url:'/check_remainder_itemQty',
-        //         method:'get',
-        //         data:{'section_chosen':section_chosen,'item_chosen':item_chosen,'sched_Id':sched_Id},
-
-        //         success:function(response){
-        //             var result=response.data;
-        //             console.log(result);
-        //         }
-        //     });
-
-        // }
-
-            
     </script>
 
 

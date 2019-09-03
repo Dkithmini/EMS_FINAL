@@ -11,37 +11,21 @@ label{
 
 input[type=text]{
 	width: 150px;
+	text-align: center;
 }
 
 input[type=number]{
 	width: 150px;
+	text-align: center;
 }
 
-/*.col-md-7{
-	background-color:#E6EFF0;
-}
-.col-md-5{
-	background-color:#E6EFF0;
-}*/
-
-/*#sec1,#sec2{
-	background-color: #E6EFF0;
-}*/
-
-.col-md-7>input{
-	width: 70px;
+.orderitems>label{
+	text-align: center;
 }
 
 thead{
 	background-color: #E0E4E4;
-}
-
-.btn-info , .btn-basic{
-	float:justify;
-
-	margin: 2px;
-	/*background-color: #839E9F;*/
-	width: 80px;
+	font-weight: bold;
 }
 
 tbody{
@@ -56,7 +40,8 @@ form{
 	border-style: none;
 }
 
-.btn-success, .btn-danger{
+.btn-success,.btn-danger,.btn-info{
 	float: right;
-	margin: 2px;
+	margin: 4px;
+	width: 85px;
 }

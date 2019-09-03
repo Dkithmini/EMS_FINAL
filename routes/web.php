@@ -25,7 +25,7 @@ Route::get('/supervisor','HomeController@supervisorDashboard')->middleware('supe
  
 Route::get('/manager','HomeController@managerDashboard')->middleware('manager');
 
-//dashboard
+//DASHBOARD
 Route::get('dashboard/managerdashboard','PageController@getManagerDashboard');
 Route::get('/dashboardcontent','ScheduleController@dashboardContent');
 Route::get('/attendanceSummery','ScheduleController@getAttendanceSummary');
@@ -34,13 +34,13 @@ Route::get('/workSummery','ScheduleController@getWorkSummary');
 // Route::get('/managerdash_pendingTasks','ScheduleController@showAllTasksCount');
 // Route::get('/managerdash_completedTasks','ScheduleController@showFinishedTasksCount');
 
-//orders
-
+//ORDERS
 Route::get('orders/addorder','PageController@getAddorder');//load addorderpage
 Route::get('orders/vieworder','PageController@getVieworder');//load vieworderpage
 
 Route::get('/getLastId','OrderController@getLastId');//get last order id
 Route::get('/getsysdate','OrderController@getSysDate');//get system date
+Route::get('/getLastsched_Date','OrderController@getLastsched_End_date');//get date of last schedule to validate due date of order
 Route::get('/getItemDetails','OrderController@getItemDetails');//get item details
 Route::post('/add_order','OrderController@addOrder');//add order
 Route::post('/addorderedsizes','OrderController@addItemSizes');//add ordered itemsizes
@@ -50,7 +50,7 @@ Route::get('/searchOrderById','OrderController@SearchById');//search order by id
 Route::get('/displaydetails','OrderController@displayOrderItems');//display item details
 Route::get('/displaysizes','OrderController@displayItemSizes');//display item sizes
 
-//schedules
+//SCHEDULES
 Route::get('schedules/createschedule','PageController@getAddschedule');//load addschedule page
 Route::get('schedules/scheduletask','PageController@getScheduleTask');//load schedule tasks page
 Route::get('schedules/viewschedule','PageController@getViewschedule');//load view shed page
@@ -64,6 +64,7 @@ Route::get('/getLasttaskId','ScheduleController@getLastTaskId');//get last taski
 Route::get('/getLastsheduleId','ScheduleController@getLastShedId');//get last shed id
 Route::get('/checkScheduledQty','ScheduleController@checkQty');//check already scheduled qty
 Route::post('/addtask','ScheduleController@addTask');//add tasks
+// Route::get('/getOrderDuedate','ScheduleController@selectDueDate');
 Route::get('/searchschedulebyid','ScheduleController@searchSchedulebyId');//search scheduled tasks details
 Route::get('/searchschedulebydate','ScheduleController@searchSchedulebyDate');//search scheduled tasks details
 Route::get('/searchsched','ScheduleController@viewSchedule');//view schedules
@@ -74,7 +75,7 @@ Route::get('/getids_unallocated','ScheduleController@getUnallocated_Emp');//get 
 Route::post('/allocateemp','ScheduleController@allocateEmp');//allocate emp
 Route::post('/changetaskstatus','ScheduleController@finishEmpAllocation');//change status of task from pending to allocated
 Route::get('/getTasksBydate','ScheduleController@showAlltasksByDate');//search tasks by date
-Route::get('/searchtask','ScheduleController@viewAllocatedTask');//get allocated task details
+Route::get('/searchtask_byId','ScheduleController@viewAllocatedTask');//get allocated task details
 Route::get('/showtaskemp','ScheduleController@showTaskEmployees');//get allocated employee list for task
 Route::get('/getitemsizes','ScheduleController@displayTaskSizes');//get item sizes for task
 Route::post('/updatetask','ScheduleController@updateTaskCompletion');//update task completion
@@ -84,7 +85,7 @@ Route::get('/checkSchedCompletion','ScheduleController@getSchedsCompleted');// c
 Route::post('/changeScheduleState','ScheduleController@changeScheduleState_Completed');//change schedule status to completed
 
 
-//employees
+//EMPLOYEES
 Route::get('employees/addemployee','PageController@getAddemployee');//load addemppage
 Route::get('employees/viewemployee','PageController@getViewemployee');//load addemppage
 Route::get('employees/updateemployee','PageController@getUpdateemployee');//load update-emppage
@@ -97,7 +98,7 @@ Route::get('/searchEmpById','EmployeeController@SearchById');//view all emp
 Route::post('/updateemployee','EmployeeController@updateEmployees');//update employee
 
 
-//attendance
+//ATTENDANCE
 Route::get('attendance/recordattendance','PageController@getRecordAttendance');//load record attendance page
 Route::get('attendance/viewattendance','PageController@getViewAttendance');//load view attendance page
 
@@ -107,7 +108,15 @@ Route::post('/recordattendance','AttendanceController@recordAttendance');//recor
 Route::get('/viewunmarked','AttendanceController@viewUnmarkedEmpList');//display unmarked emp list
 Route::get('/viewAttendance','AttendanceController@viewAttendance');//display all attendance
 
-//reports
-Route::get('reports/attendanceReports','PageController@getReports');//load reports
-Route::get('getAllattendancereport','ReportController@get_AttendanceRecords');//load reports allorders
-Route::post('reports/showpdf','ReportController@showPDF');//load reports allorders
+//REPORTS
+Route::get('reports/attendanceReports','PageController@getReportsAttendance');//load reports attendance page
+Route::get('getAllattendancereport','ReportController@get_AttendanceRecords');//load reports attendance
+Route::post('reports/showpdf','ReportController@showPDF');//print to pdf
+
+Route::get('/getAllordersreport','ReportController@getAllOrders');//load reports of orders page
+Route::get('reports/ordersReports','PageController@getReportsOrders');//load reports oredrs
+
+
+Route::get('/getCalendarData','ScheduleController@getcalendar');
+
+

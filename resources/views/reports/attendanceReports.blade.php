@@ -13,7 +13,7 @@
 <hr>
 <br>
 
-<h4 style="font-weight: bold;padding-left: 40px;" id="report_Heading">Daily Attendance details Report : </h4><br>
+<h4 style="font-weight: bold;padding-left: 40px;" id="report_Heading">Daily Attendance Details Report : </h4><br>
 <div>
 	<table class="table table-condensed " style="background-color: none;border-style: none">
 			<thead>
@@ -36,8 +36,10 @@
 			searchAttendance();
 		});
 
+		//search total attendance by date
 		function searchAttendance(){
 			var date=$('#searchdate').val();
+			$('#report_Heading').html('');
 			$.ajax({
 			 	url:'/getAllattendancereport',
 			 	method:'get',
@@ -63,22 +65,13 @@
 						document.getElementById("tbody").innerHTML=showdata;
 						
 					}
-					$('#report_Heading').append(date);
+					$('#report_Heading').append("Daily Attendance Details Report :"+date);
 			 	}
 			 });
 		}
 
 		$("#btnshowpdf").click(function () {
-         	// html2canvas(document.getElementById('content'), 
-         	// 	{ onrendered: function(canvas) { 
-         	// 		var img =canvas.toDataURL("image/jpeg,1.0"); 
-
-         	// 		var pdf = new jsPDF(); 
-
-         	// 		pdf.addImage(img, 'JPEG',18,15); 
-         	// 		// pdf.output('datauri'); 
-         	// 		pdf.save('autoprint.pdf'); } })
-
+         	
          	var HTML_Width = $("#content").width();
 			 var HTML_Height = $("#content").height();
 			 var top_left_margin = 15;

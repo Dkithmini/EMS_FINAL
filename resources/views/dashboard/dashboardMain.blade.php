@@ -2,66 +2,68 @@
 
 @section('show_content')
 <link rel="stylesheet" type="text/css" href="{{ asset('css/mycss/dashboard.css') }}">
+
 <div class="card-deck">
 
-<div class="card">
-  	<div class="row">
-  		<div class="col-sm-4">
-  			<i class="fas fa-shopping-cart fa-3x" style="color:#3B9F57;"></i>
-  		</div>
-  		<div class="col-sm-8">
-  			 <div class="card-body-right" style="color:#3B9F57">
-		      	<p class="card-title">TOTAL ORDERS</p>
-		      	<p id="valAllOrders"></p>
-		    </div>
-  		</div>
-  	</div>
-</div>
+	<div class="card">
+	  	<div class="row">
+	  		<div class="col-sm-4">
+	  			<i class="fas fa-shopping-cart fa-3x" style="color:#3B9F57;"></i>
+	  		</div>
+	  		<div class="col-sm-8">
+	  			 <div class="card-body-right" style="color:#3B9F57">
+			      	<p class="card-title">COMPLETED ORDERS</p>
+			      	<p id="valAllOrders"></p>
+			    </div>
+	  		</div>
+	  	</div>
+	</div>
 
-<div class="card">
-  	<div class="row">
-  		<div class="col-sm-4">
-  			<i class="fas fa-calendar-alt fa-3x" style="color:#75538A;"></i>
-  		</div>
-  		<div class="col-sm-8">
-  			<div class="card-body-right" style="color:#75538A;">
-		      	<p class="card-title">SCHEDULED </p>
-		      	<p id="valSchedules"></p>
-		    </div>
-  		</div>
-  	</div>
-</div>
+	<div class="card">
+	  	<div class="row">
+	  		<div class="col-sm-4">
+	  			<i class="fas fa-calendar-alt fa-3x" style="color:#75538A;"></i>
+	  		</div>
+	  		<div class="col-sm-8">
+	  			<div class="card-body-right" style="color:#75538A;">
+			      	<p class="card-title">SCHEDULED </p>
+			      	<p id="valSchedules"></p>
+			    </div>
+	  		</div>
+	  	</div>
+	</div>
 
-<div class="card">
-  	<div class="row">
-  		<div class="col-sm-4">
-  			<i class="fas fa-clock fa-3x" style="color:#928752;"></i>
-  		</div>
-  		<div class="col-sm-8">
-  			<div class="card-body-right" style="color:#928752;">
-		      	<p class="card-title">PENDING TASKS</p>
-		      	<p id="valPendingTasks"></p>
-		    </div>
-  		</div>
-  	</div>
-</div>
+	<div class="card">
+	  	<div class="row">
+	  		<div class="col-sm-4">
+	  			<i class="fas fa-clock fa-3x" style="color:#928752;"></i>
+	  		</div>
+	  		<div class="col-sm-8">
+	  			<div class="card-body-right" style="color:#928752;">
+			      	<p class="card-title">PENDING TASKS</p>
+			      	<p id="valPendingTasks"></p>
+			    </div>
+	  		</div>
+	  	</div>
+	</div>
 
-<div class="card" >
-  	<div class="row">
-  		<div class="col-sm-4">
-  			 <i class="fas fa-tasks fa-3x" style="color:#415C84;"></i>
-  		</div>
-  		<div class="col-sm-8">
-  			<div class="card-body-right" style="color:#415C84;">
-      			<p class="card-title">FINISHED TASKS</p>
-      			<p id="valCompletedTasks"></p>
-    		</div>
-  		</div>
-  	</div>
-  </div>
+	<div class="card" >
+	  	<div class="row">
+	  		<div class="col-sm-4">
+	  			 <i class="fas fa-tasks fa-3x" style="color:#415C84;"></i>
+	  		</div>
+	  		<div class="col-sm-8">
+	  			<div class="card-body-right" style="color:#415C84;">
+	      			<p class="card-title">FINISHED TASKS</p>
+	      			<p id="valCompletedTasks"></p>
+	    		</div>
+	  		</div>
+	  	</div>
+	  </div>
 </div>
 <br><br>
 
+<!-- Tasks summery panel -->
 <div class="panel" >
 	<h5> Order Task Summery</h5>
 	<div class="panel-body" style="max-height: 150px;overflow-y: scroll">
@@ -86,7 +88,9 @@
 	</div>
 </div>
 <br><br>
+<!-- end of task summary panel -->
 
+<!-- attendance summary section -->
 <div class="card-deck">
 	<div class="card" id="attsummery">
 		<div class="row">
@@ -115,8 +119,9 @@
 	        </div>
 	    </form>
 	</div>
-			
-			
+<!--end of attendance summary  -->
+
+<!--Work summary section -->			
 	</div>
 	<div class="card" id="worksummery">
 		<div class="row">
@@ -129,28 +134,24 @@
 		</div>
 
 		<div class="card-body">
-				<form id="frmWorkSummery">
-	                <div class="form-group" id="fgWorkSummery" >
-	                   	<label>Date</label>
-	                   	<input type="text" name="txtToday" id="todayDateWork" >
-  						<!-- <button type="submit">Search</button><br><br> -->
-  						<label>Total Tasks</label>
-  						<input type="text" name="txtTotTasks" readonly="" id="totTaskCount"><br>
-        				<label>Allocated Tasks</label>
-        				<input type="text" name="txtTotAllocatedTasks" readonly="" id="totAllocatedTaskCount"><br>
-        				<label>Completed Tasks</label>
-        				<input type="text" name="txtTotTasksCompleted" readonly="" id="totCompletedTaskCount"><br>
-        				<label>Due Orders</label>
-        				<input type="text" name="txtDueOrders" readonly="" id="totDueOrders"><br>
-        				<!-- <label>Completed Orders</label>
-        				<input type="text" name="txtCompletedOrders" readonly=""><br> -->
-	                </div>
-	            </form>
+			<form id="frmWorkSummery">
+	            <div class="form-group" id="fgWorkSummery" >
+	                <label>Date</label>
+	                <input type="text" name="txtToday" id="todayDateWork" >
+  					<label>Total Tasks</label>
+  					<input type="text" name="txtTotTasks" readonly="" id="totTaskCount"><br>
+        			<label>Allocated Tasks</label>
+        			<input type="text" name="txtTotAllocatedTasks" readonly="" id="totAllocatedTaskCount"><br>
+        			<label>Completed Tasks</label>
+        			<input type="text" name="txtTotTasksCompleted" readonly="" id="totCompletedTaskCount"><br>
+        			<label>Due Orders</label>
+        			<input type="text" name="txtDueOrders" readonly="" id="totDueOrders"><br>
+	              </div>
+	        </form>
 		</div>
-		
 	</div>
-
 </div>
+<!--end of attendance summary  -->
 
 <script type="text/javascript">
 		$(document).ready(function(){
@@ -175,6 +176,7 @@
 			 });	
 		}
 
+		//get system date 
 		function getTodayDate(){
 			var today = new Date();
 			var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
@@ -182,6 +184,7 @@
 			$('#todayDateWork').val(date);
 		}
 
+		//display attendance summary
 		function displayAttendanceSummary(){
 			$.ajax({
 			 	url:'/attendanceSummery',
@@ -197,6 +200,7 @@
 			 });	
 		}
 
+		//display wirk summary
 		function displayWorkSummary(){
 			$.ajax({
 			 	url:'/workSummery',

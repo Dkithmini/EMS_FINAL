@@ -15,16 +15,11 @@
 							<label>Order ID</label>
 							<input type="number" name="txtOrderId" id="orderid" readonly="" >
 							<label>Order Date</label>
-							<input type="date" name="txtOrderDate" required="" id="orderdate">
-							<label>Last Order Due-Date</label>
-							<input type="text" name="txtLastDueOrder"><br>
-							<!-- <label>Last Sheduled Date</label>
-							<input type="text" name="txtLastDueShed"><br> -->
+							<input type="date" name="txtOrderDate" required="" id="orderdate" >
 							<label>Due Date</label>
-							<input type="Date" name="txtDueDate" required="" id="duedate"><br><br>
+							<input type="Date" name="txtDueDate" required="" id="duedate">
 							<label>Customer </label>
 							<input type="text" name="txtCusName" id="cusname" required="">
-							<!-- <label>Total No of Items</label><input type="text" name="txtno_of_items" style="width: 100px"> -->
 							<br>
 						</div>
 					</form>
@@ -42,28 +37,28 @@
 						<label>Item Name</label>
 						<input type="text" name="txtItemName" id="itemname" readonly="">
 						<input type="textarea" name="txtItemDescription" placeholder="description" style="width: 350px;height: 40px;padding-left: 10px" id="itemdes" readonly="">				
-						<h5>Item Sizes</h5>
+						<br>
+
+						<div class="orderitems">
+							<h5>Item Sizes</h5>
 															
-						<label>XS</label><input type="text" name="txtXS"  id="xs" class="size" value="0">
-						<label>S</label><input type="text" name="txtS"  id="smll"  class="size" value="0">
-						<label>M</label><input type="text" name="txtM"  id="medm"  class="size" value="0">
-						<label>L</label><input type="text" name="txtL"  id="lrg"  class="size" value="0">
-						<label>XL</label><input type="text" name="txtXL"  id="xlg"  class="size" value="0">
-						<label>XXL</label><input type="text" name="txtXXL"  id="xxlg"  class="size" value="0"><br>
-						<label>Total Quantity</label><input type="text" name="txtTotQty" class="total" id="tot"><label style="width: 40px;">Pcs</label><br>
-											
-						<button class="btn btn-basic" type="button" id="btnreset">Reset</button>
-						<button class="btn btn-info" type="button"  id="btnAddItem" disabled="">Add Item</button>	
-							
+							<label>XS</label><input type="text" name="txtXS"  id="xs" class="size" value="0">
+							<label>S</label><input type="text" name="txtS"  id="smll"  class="size" value="0">
+							<label>M</label><input type="text" name="txtM"  id="medm"  class="size" value="0">
+							<label>L</label><input type="text" name="txtL"  id="lrg"  class="size" value="0">
+							<label>XL</label><input type="text" name="txtXL"  id="xlg"  class="size" value="0">
+							<label>XXL</label><input type="text" name="txtXXL"  id="xxlg"  class="size" value="0"><br>
+							<label>Total Quantity</label><input type="text" name="txtTotQty" class="total" id="tot"><label style="width: 40px;">Pcs</label>
+						</div>
+						<br>
+						
+						<div class="btn-group float-right">
+							<button class="btn btn-danger" type="button" id="btnreset">Reset</button>
+							<button class="btn btn-success" type="button"  id="btnAddItem" disabled="">Add Item</button>
+						</div>							
 					</div>
 				</form>	
-			</div>	
-			<div class="col-md-12">
-				<!-- <img src="{{asset('images/frock.jpg')}}" style="height: 120px;width: 120px" name="image"> -->
-				<button class="btn btn-danger " type="button" >Cancel</button>
-				<button class="btn btn-success" type="submit" id="btnAddOrder" disabled="">Add Order</button>
-				<!-- <button class="btn btn-success" type="button" id="btnSave" disabled="">Save</button> -->
-			</div>	
+			</div>		
 		</div>
 	</div>
 <!--End order details panel-->
@@ -71,7 +66,6 @@
 
 <!--Display Order details table panel-->
 	<div class="panel" style=" margin-bottom: 5px;border-style: none" id="sec2">
-		<h5>Ordered Item Details</h5>
 		<div class="panel-body" style="max-height: 200px; overflow-y: scroll" >
 			<div class="col-md-12" >
 			  	<div class="table-responsive">
@@ -91,7 +85,7 @@
 							</tr>
 						</thead>
 						<tbody id="tbody">
-						
+							<!-- table content -->
 						</tbody>
 					</table>
 			  	</div>
@@ -101,23 +95,28 @@
 	</div>
 <!--End of order detail table panel-->
 
-	<script type="text/javascript">
+	<div class="col-md-12">
+		<div class="btn-group float-right">
+			<button class="btn btn-danger " type="button" >Cancel</button>
+			<button class="btn btn-info" type="button" id="btnAddOrder" disabled="">Add Order</button>
+		</div>	
+	</div>
 
-		//get order id automatically
+	<script type="text/javascript">
+		//get order id and order date on loading the page
 		$(document).ready(function(){
-        	getLastOrderId();
+        	displayOrderId();
         	getSystemDate();
         });
 
-
-		function getLastOrderId(){
+		//calculate order id to be displayed
+		function displayOrderId(){
 		 	$.ajax({
         		url:'/getLastId',
 			 	method:'get',
 			 	success:function(lastId){
 			 		// console.log(lastId);
-
-			 		var result=lastId.data;
+					var result=lastId.data;
 			 		
 					if(!result){
 			 			var nextId=1;
@@ -126,45 +125,63 @@
 			 			var nextId=result.Order_Id;
 			 			var nextId=nextId+1;
 			 		}
-			 		console.log(nextId);
+			 		// console.log(nextId);
 			 		$('#orderid').val(nextId);
 			 	}
         	});
 		 }
 
+		 //get system date as order date
 		function getSystemDate(){
-		 	$.ajax({
-        		url:'/getsysdate',
-			 	method:'get',
-			 	success:function(response){
-			 		console.log(response);
-			 		// var sysdata=response.data;
-			 		// var today=sysdata.date;
-			 		// $('#orderdate').val(today);
-			 	}
-        	});
-		 	
+    		var today = new Date();
+			var day = ("0" + today.getDate()).slice(-2);
+    		var month = ("0" + (today.getMonth() + 1)).slice(-2);
+
+    		var date = today.getFullYear()+"-"+(month)+"-"+(day) ;
+		 	$('#orderdate').val(date);
 		}
 
-
+		//validate due date
 		$('#duedate').change(function(){
-			var date1=$('#orderdate').val();
-			var date2=$('#duedate').val();
+			validateDuedate();
+		});
 
-			if(date2>date1){
-				console.log('correct');
-			}
-			else{
-				alert('wrong due data..!');
-				$('#duedate').val('');
-				
-			}
-		}) 
+		function validateDuedate(){
+			$.ajax({
+        		url:'/getLastsched_Date',
+			 	method:'get',
+			 	success:function(response){
+			 		// console.log(response.data);
+			 		var lastSched_end=response.data;
+			 		var orderdate_tocheck=$('#orderdate').val();
+			 		var date_tocheck=$('#duedate').val();
+
+			 		if( date_tocheck < orderdate_tocheck){
+						alert('wrong due data..!');
+						$('#duedate').val('');
+					}
+					else{
+						if( date_tocheck < lastSched_end){
+							alert('wrong due data..!');
+							$('#duedate').val('');
+						}
+					}
+			 	}
+        	});
+		} 
 
 		// show item details for selected item code
 		$('#itemcode').change(function(){
-		 	var item_code=$('#itemcode').val();
-		 	get_Item_Details(item_code);
+			var item_code=$('#itemcode').val();
+
+			if(item_code === ''){
+				$('#itemname').val('');
+			 	$('#itemdes').val('');
+			}
+			else{
+				get_Item_Details(item_code);
+			}
+		 	
 		 })
 
 		function get_Item_Details(item_code=''){
@@ -188,19 +205,17 @@
 			 			var item_des=show[0].Description;
 			 			$('#itemname').val(item_name);
 			 			$('#itemdes').val(item_des);
-			 			
 			 		}
-			 		
 			 	}
         	});
-		 }
+		}
 
 
 		$('.size').change(function(){
 		 	$('#btnAddItem').prop('disabled',false);
-		 });
+		});
 
-		 //calc total item qty
+		//calc total item qty
 		$(document).on("change", ".size", function() {
    		 	var sum = 0;
    		 	$(".size").each(function(){
@@ -209,6 +224,7 @@
    		 	$(".total").val(sum);
 		});
 		
+		//reset item details form
 		$('#btnreset').click(function(){
 			resetForm();
 		})
@@ -252,15 +268,9 @@
 
 		$('#btnAddOrder').click(function(){
 			addOrder();
-			// $('#btnSave').prop('disabled',false);
 			addSizes();
 
 		});
-
-		// $('#btnSave').click(function(){
-		// 	addSizes();
-
-		// });
 
 		//Add order details 
 		function addOrder(){
@@ -268,6 +278,7 @@
 			var order_date=$('#orderdate').val();
 			var due_date=$('#duedate').val();
 			var cusname=$('#cusname').val();
+			
 			if(order_date!='' && due_date!='' && due_date!='' &&cusname!=''){
 				$.ajax({
 		            type: 'post',
@@ -276,7 +287,9 @@
                     data: {'id_order':id_order,'order_date':order_date,'due_date':due_date,'cusname':cusname},
 
 		            success: function(response) {
-						alert(response.message);
+						// alert(response.message);
+						window.popWindow.dialog("Order Added Successfully..!","success");
+						location.reload();
 		            }
 		        });
 		    }
@@ -312,13 +325,15 @@
 	                    data: {'Size_Table':Size_Table,'id_order':id_order},
 
 			            success: function(response) {
-							alert(response.message);
+							// alert(response.message);
+							window.popWindow.dialog(response.message,"info");
 			            }
 			        });
 		    	});
 			}
 			else{
-				alert('	Incomplete Order details..!');
+				// alert('	Incomplete Order details..!');
+				window.popWindow.dialog("Incomplete Order Details..!","error");
 			}	
 		}
 

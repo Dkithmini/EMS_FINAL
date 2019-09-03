@@ -24,6 +24,11 @@ class OrderController extends Controller{
 
 	}
 
+	public function getLastsched_End_date(){
+		$date=DB::table('schedules')->orderBy('End_Date','DESC')->pluck('End_Date')->first();
+		return response()->json(['data'=>$date]);
+	}
+
 	public function getItemDetails(Request $req){
 		$code=$req->get('item_code');
 
@@ -56,21 +61,6 @@ class OrderController extends Controller{
 		}
 	}
 		
-	
-
-	// public function addOrderItems(Request $req2){
-	// 	//ordered item table
-	// 	$id=$req2->input('txtOrderId');
-	// 	$itemcode=$req2->input('txtItemCode');
-	// 	$itemname=$req2->input('txtItemName');
-	// 	$decsription=$req2->input('txtItemDescription');
-	// 	$tot=$req2->input('txtTotQty');
-		
-	// 	$items=array('Order_Id'=>$id,'Item_Code'=>$itemcode,'Item_Name'=>$itemname,'Description'=>$decsription,'Total_Qty'=>$tot);
-	// 	DB::table('ordered_items')->insert($items);
-	// 	// echo "Items Added";
-		
-	// }
 
 	public function addItemSizes(Request $request){
 
@@ -145,7 +135,10 @@ class OrderController extends Controller{
 	}
 
 	public function ViewAllOrders(){
-		$data=DB::table('placed_orders')->get();
+		// $today_date = Carbon::today()->format('F Y',strtotime($today_date));
+
+		$data=DB::table('placed_orders')
+						->get();
 		return view('orders.vieworder',compact('data'));
 		
 	}

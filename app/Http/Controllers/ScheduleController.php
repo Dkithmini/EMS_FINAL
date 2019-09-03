@@ -496,4 +496,19 @@ class ScheduleController extends Controller
             }
         }
     }
+
+    public function getcalendar(){
+        $tasks = DB::table('daily_tasks')->get();
+        return response()->json(['data'=>$tasks]);
+        // echo json_encode($tasks);
+    }
+
+    // public function selectDueDate(Request $request){
+    //     $schedule_get=$request->get('Sched_Id');
+    //     $date_due=DB::table('daily_tasks')
+    //                     ->where('Date','like','%'.$schedule_get.'%')
+    //                     ->orderBy('Date', 'DESC')
+    //                     ->first();
+    //     return response()->json(['data'=>$date_due]);
+    // }
 }
